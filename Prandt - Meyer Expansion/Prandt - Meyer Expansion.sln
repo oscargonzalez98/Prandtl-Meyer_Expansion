@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF APP", "WPF APP\WPF APP.csproj", "{022AC62A-C403-4BCA-8835-411DF713938E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LIBRERIA CLASES", "LIBRERIA CLASES\LIBRERIA CLASES.csproj", "{ABB89BBA-83A6-463F-9B28-367099E87880}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{022AC62A-C403-4BCA-8835-411DF713938E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{022AC62A-C403-4BCA-8835-411DF713938E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{022AC62A-C403-4BCA-8835-411DF713938E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{022AC62A-C403-4BCA-8835-411DF713938E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABB89BBA-83A6-463F-9B28-367099E87880}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABB89BBA-83A6-463F-9B28-367099E87880}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABB89BBA-83A6-463F-9B28-367099E87880}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABB89BBA-83A6-463F-9B28-367099E87880}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2784DF7B-1D6D-48A8-939C-94CB45816F3F}
+	EndGlobalSection
+EndGlobal
