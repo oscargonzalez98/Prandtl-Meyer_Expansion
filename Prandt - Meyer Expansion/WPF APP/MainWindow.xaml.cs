@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using LIBRERIA_CLASES;
 
 namespace WPF_APP
 {
@@ -30,14 +31,17 @@ namespace WPF_APP
             int rows = 40;
             int columns = 120;
 
-            double M = Convert.ToDouble(tb_M.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
-            double U = Convert.ToDouble(tb_U.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
-            double P = Convert.ToDouble(tb_P.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
-            double rho = Convert.ToDouble(tb_rho.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
-            double T = Convert.ToDouble(tb_T.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
+            double M1 = Convert.ToDouble(tb_M.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
+            double P1 = Convert.ToDouble(tb_P.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
+            double rho1 = Convert.ToDouble(tb_rho.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
+            double T1 = Convert.ToDouble(tb_T.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
             double theta = Convert.ToDouble(tb_theta.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
+            double gamma = Convert.ToDouble(tb_Gamma.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
+            double R = Convert.ToDouble(tb_R.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
 
-
+            Matriz Matrix = new Matriz(rows, columns);
+            double U1 = M1 * Math.Sqrt(R * gamma * T1);
+            Matrix.SetInitialConditions(M1, U1, 0, P1, rho1, T1, theta, gamma, R);
         }
     }
 }

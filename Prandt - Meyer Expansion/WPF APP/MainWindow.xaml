@@ -8,19 +8,22 @@
         Title="MainWindow" Height="1080" Width="1920">
     <Canvas>
         <Label Content="M:" Height="30" Canvas.Left="115" Canvas.Top="70" Width="30"/>
-        <Label Content="U:" Height="30" Canvas.Left="115" Canvas.Top="100" Width="30"/>
-        <Label Content="P:" Height="30" Canvas.Left="115" Canvas.Top="130" Width="30"/>
-        <Label Content="ρ:" Height="30" Canvas.Left="115" Canvas.Top="160" Width="30"/>
-        <Label Content="T:" Height="30" Canvas.Left="115" Canvas.Top="190" Width="30"/>
-        <Label Content="θ:" Height="30" Canvas.Left="115" Canvas.Top="210" Width="30"/>
-        
+        <Label Content="P:" Height="30" Canvas.Left="115" Canvas.Top="105" Width="30"/>
+        <Label Content="ρ:" Height="30" Canvas.Left="115" Canvas.Top="135" Width="30"/>
+        <Label Content="T:" Height="30" Canvas.Left="115" Canvas.Top="165" Width="30"/>
+        <Label Content="θ:" Height="30" Canvas.Left="115" Canvas.Top="185" Width="30"/>
+        <Label Content="Gamma:" Height="30" Canvas.Left="82" Canvas.Top="224" Width="63"/>
+
         <TextBox Name="tb_M" Height="16" Canvas.Left="150" Canvas.Top="77" Text="2" TextWrapping="Wrap" Width="136"/>
-        <TextBox x:Name="tb_U" Height="16" Canvas.Left="150" Canvas.Top="107" Text="2" TextWrapping="Wrap" Width="136"/>
-        <TextBox Name="tb_P" Height="16" Canvas.Left="150" Canvas.Top="137" Text="1.01e5" TextWrapping="Wrap" Width="136"/>
-        <TextBox Name="tb_rho" Height="16" Canvas.Left="150" Canvas.Top="167" Text="1.23" TextWrapping="Wrap" Width="136"/>
-        <TextBox Name="tb_T" Height="16" Canvas.Left="150" Canvas.Top="197" Text="286,1" TextWrapping="Wrap" Width="136"/>
-        <TextBox Name="tb_theta" Height="16" Canvas.Left="150" Canvas.Top="217" Text="5.352" TextWrapping="Wrap" Width="136"/>
-        
-        <Button Name="bt_Calculate" Content="Calculate" Height="21" Canvas.Left="130" Canvas.Top="262" Width="148" Click="bt_Calculate_Click"/>
+        <TextBox Name="tb_P" Height="16" Canvas.Left="150" Canvas.Top="112" Text="1.01e5" TextWrapping="Wrap" Width="136"/>
+        <TextBox Name="tb_rho" Height="16" Canvas.Left="150" Canvas.Top="142" Text="1.23" TextWrapping="Wrap" Width="136"/>
+        <TextBox Name="tb_T" Height="16" Canvas.Left="150" Canvas.Top="172" Text="286.1" TextWrapping="Wrap" Width="136"/>
+        <TextBox Name="tb_theta" Height="16" Canvas.Left="150" Canvas.Top="192" Text="5.352" TextWrapping="Wrap" Width="136"/>
+        <TextBox x:Name="tb_Gamma" Height="16" Canvas.Left="150" Canvas.Top="231" Text="1.4" TextWrapping="Wrap" Width="136"/>
+
+        <Button Name="bt_Calculate" Content="Calculate" Height="21" Canvas.Left="138" Canvas.Top="357" Width="148" Click="bt_Calculate_Click"/>
+        <Label Content="R:" Height="30" Canvas.Left="82" Canvas.Top="264" Width="63"/>
+        <TextBox x:Name="tb_R" Height="16" Canvas.Left="150" Canvas.Top="271" Text="287" TextWrapping="Wrap" Width="136"/>
+
     </Canvas>
 </Window>
