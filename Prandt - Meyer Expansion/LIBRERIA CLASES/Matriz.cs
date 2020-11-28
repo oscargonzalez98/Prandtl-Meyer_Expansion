@@ -151,6 +151,15 @@ namespace LIBRERIA_CLASES
                     this.Matrix[i, j + 1].CalculatePredictedF_NextColumn(this.Matrix[i, j].F1, this.Matrix[i + 1, j].F1, this.Matrix[i - 1, j].F1, this.Matrix[i, j].F2, this.Matrix[i + 1, j].F2, this.Matrix[i - 1, j].F2, this.Matrix[i, j].F3, this.Matrix[i + 1, j].F3, this.Matrix[i - 1, j].F3, this.Matrix[i, j].F4, this.Matrix[i + 1, j].F4, this.Matrix[i - 1, j].F4, this.Matrix[i, j].deltaF1_deltaETA, this.Matrix[i, j].deltaF2_deltaETA, this.Matrix[i, j].deltaF3_deltaETA, this.Matrix[i, j].deltaF4_deltaETA, deltaETA, this.Matrix[i, j].P, this.Matrix[i + 1, j].P, this.Matrix[i - 1, j].P);
                 }
             }
+
+            // Calculamos las Gs predecidas en la siguiente columna
+            for(int i = 0; i<rows; i++)
+            {
+                this.Matrix[i, j + 1].CalculatePredictedG_NextColumn();
+            }
+
+            // Ahora, con los valores de F y G predecidos calculamos la derivada de F respecto de Xi predecida 
+
         }
 
 

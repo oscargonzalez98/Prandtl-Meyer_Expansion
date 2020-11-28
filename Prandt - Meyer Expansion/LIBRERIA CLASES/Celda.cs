@@ -36,6 +36,7 @@ namespace LIBRERIA_CLASES
         public double predictedG1, predictedG2, predictedG3, predictedG4;
 
         public double deltaF1_deltaETA, deltaF2_deltaETA, deltaF3_deltaETA, deltaF4_deltaETA;
+        public double predicted_deltaF1_deltaETA, predicted_deltaF2_deltaETA, predicted_deltaF3_deltaETA, predicted_deltaF4_deltaETA;
 
         public Celda(double M, double U, double V, double P, double rho, double T, double Theta, double gamma, double R)
         {
@@ -114,6 +115,20 @@ namespace LIBRERIA_CLASES
             this.predictedF2 = F2 + dF2_dETA * deltaETA;
             this.predictedF3 = F3 + dF3_dETA * deltaETA;
             this.predictedF4 = F4 + dF4_dETA * deltaETA;
+        }
+
+        public void CalculatePredictedG_NextColumn()
+        {
+            double A = (Math.Pow(this.predictedF3, 2) / (2 * this.predictedF1)) - this.predictedF4;
+            double B = (this.gamma / (this.gamma - 1)) * this.predictedF1 * this.predictedF2;
+            double C = -1 * ((this.gamma + 1) / (2 * (this.gamma - 1))) * Math.Pow(this.predictedF3, 3);
+
+            double predictedRho = ((-B + Math.Sqrt(B * B - 4 * A * C)) / 2 * A);
+
+            this.predictedG1 = predictedRho * (this.predictedF3 / this.predictedF1);
+            this.predictedG2 = this.predictedF3;
+            this.predictedG3 = predictedRho * Math.Pow(this.predictedF3 / this.predictedF1, 2) + this.predictedF2 - (Math.Pow(this.predictedF1, 2) / predictedRho);
+            this.predictedG4 = (this.gamma / (this.gamma - 1)) * (this.predictedF2 - (Math.Pow(this.predictedF1, 2) / predictedRho)) * (this.predictedF3 / this.predictedF1) + (predictedRho / 2) * (this.predictedF3 / this.predictedF1) * (Math.Pow(this.predictedF1 / predictedRho, 2) + Math.Pow(this.predictedF3 / this.predictedF1, 2));
         }
 
 
