@@ -37,6 +37,7 @@ namespace LIBRERIA_CLASES
 
         public double deltaF1_deltaETA, deltaF2_deltaETA, deltaF3_deltaETA, deltaF4_deltaETA;
         public double predicted_deltaF1_deltaETA, predicted_deltaF2_deltaETA, predicted_deltaF3_deltaETA, predicted_deltaF4_deltaETA;
+        public double deltaF1_deltaETA_Average, deltaF2_deltaETA_Average, deltaF3_deltaETA_Average, deltaF4_deltaETA_Average;
 
         public Celda(double M, double U, double V, double P, double rho, double T, double Theta, double gamma, double R)
         {
@@ -131,6 +132,28 @@ namespace LIBRERIA_CLASES
             this.predictedG4 = (this.gamma / (this.gamma - 1)) * (this.predictedF2 - (Math.Pow(this.predictedF1, 2) / predictedRho)) * (this.predictedF3 / this.predictedF1) + (predictedRho / 2) * (this.predictedF3 / this.predictedF1) * (Math.Pow(this.predictedF1 / predictedRho, 2) + Math.Pow(this.predictedF3 / this.predictedF1, 2));
         }
 
+        public void CalculatePRedicted_dF_dETA_NextColumn_Boundary(double predictedF1_arriba, double predictedF2_arriba, double predictedF3_arriba, double predictedF4_arriba, double predictedG1_arriba, double predictedG2_arriba, double predictedG3_arriba, double predictedG4_arriba, double deltaETA)
+        {
+            this.predicted_deltaF1_deltaETA = dETA_dX * ((this.predictedF1 - predictedF1_arriba) / deltaETA) + (1 / this.h) * ((this.predictedG1 - predictedG1_arriba) / deltaETA);
+            this.predicted_deltaF2_deltaETA = dETA_dX * ((this.predictedF2 - predictedF2_arriba) / deltaETA) + (1 / this.h) * ((this.predictedG2 - predictedG2_arriba) / deltaETA);
+            this.predicted_deltaF3_deltaETA = dETA_dX * ((this.predictedF3 - predictedF3_arriba) / deltaETA) + (1 / this.h) * ((this.predictedG3 - predictedG3_arriba) / deltaETA);
+            this.predicted_deltaF4_deltaETA = dETA_dX * ((this.predictedF4 - predictedF4_arriba) / deltaETA) + (1 / this.h) * ((this.predictedG4 - predictedG4_arriba) / deltaETA);
+        }
 
+        public void CalculatePRedicted_dF_dETA_NextColumn(double predictedF1_abajo, double predictedF2_abajo, double predictedF3_abajo, double predictedF4_abajo, double predictedG1_abajo, double predictedG2_abajo, double predictedG3_abajo, double predictedG4_abajo, double deltaETA)
+        {
+            this.predicted_deltaF1_deltaETA = dETA_dX * ((predictedF1_abajo - this.predictedF1) / deltaETA) + (1 / this.h) * ((predictedG1_abajo - this.predictedG1) / deltaETA);
+            this.predicted_deltaF2_deltaETA = dETA_dX * ((predictedF2_abajo - this.predictedF2) / deltaETA) + (1 / this.h) * ((predictedG2_abajo - this.predictedG2) / deltaETA);
+            this.predicted_deltaF3_deltaETA = dETA_dX * ((predictedF3_abajo - this.predictedF3) / deltaETA) + (1 / this.h) * ((predictedG3_abajo - this.predictedG3) / deltaETA);
+            this.predicted_deltaF4_deltaETA = dETA_dX * ((predictedF4_abajo - this.predictedF4) / deltaETA) + (1 / this.h) * ((predictedG4_abajo - this.predictedG4) / deltaETA);
+        }
+
+        public void CalculateDeltaF_DeltaETA_Average(double predicted_deltaF1_deltaETA_Siguiente, double predicted_deltaF2_deltaETA_Siguiente, double predicted_deltaF3_deltaETA_Siguiente, double predicted_deltaF4_deltaETA_Siguiente)
+        {
+            this.deltaF1_deltaETA_Average = (1 / 2) * (this.deltaF1_deltaETA + predicted_deltaF1_deltaETA_Siguiente);
+            this.deltaF2_deltaETA_Average = (1 / 2) * (this.deltaF2_deltaETA + predicted_deltaF2_deltaETA_Siguiente);
+            this.deltaF3_deltaETA_Average = (1 / 2) * (this.deltaF3_deltaETA + predicted_deltaF3_deltaETA_Siguiente);
+            this.deltaF4_deltaETA_Average = (1 / 2) * (this.deltaF4_deltaETA + predicted_deltaF4_deltaETA_Siguiente);
+        }
     }
 }

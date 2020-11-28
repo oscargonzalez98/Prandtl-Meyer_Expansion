@@ -157,8 +157,30 @@ namespace LIBRERIA_CLASES
             {
                 this.Matrix[i, j + 1].CalculatePredictedG_NextColumn();
             }
+        }
 
+        public void CalculateCorrectorStep(int j)
+        {
             // Ahora, con los valores de F y G predecidos calculamos la derivada de F respecto de Xi predecida 
+            for (int i = 0; i < rows; i++)
+            {
+                if (i == 0)
+                {
+                    this.Matrix[i, j + 1].CalculatePRedicted_dF_dETA_NextColumn_Boundary(this.Matrix[i + 1, j + 1].predictedF1, this.Matrix[i + 1, j + 1].predictedF2, this.Matrix[i + 1, j + 1].predictedF3, this.Matrix[i + 1, j + 1].predictedF4, this.Matrix[i + 1, j + 1].predictedG1, this.Matrix[i + 1, j + 1].predictedG2, this.Matrix[i + 1, j + 1].predictedG3, this.Matrix[i + 1, j + 1].predictedG4, deltaETA);
+                }
+                else
+                {
+                    this.Matrix[i, j + 1].CalculatePRedicted_dF_dETA_NextColumn(this.Matrix[i - 1, j + 1].predictedF1, this.Matrix[i - 1, j + 1].predictedF2, this.Matrix[i - 1, j + 1].predictedF3, this.Matrix[i - 1, j + 1].predictedF4, this.Matrix[i - 1, j + 1].predictedG1, this.Matrix[i - 1, j + 1].predictedG2, this.Matrix[i - 1, j + 1].predictedG3, this.Matrix[i - 1, j + 1].predictedG4, deltaETA);
+                }
+            }
+
+            // Ahora calculamos dF / dETA average
+            for(int i = 0; i < rows; i++)
+            {
+                this.Matrix[i, j].CalculateDeltaF_DeltaETA_Average(this.Matrix[i,j + 1].predicted_deltaF1_deltaETA, this.Matrix[i, j + 1].predicted_deltaF2_deltaETA, this.Matrix[i, j + 1].predicted_deltaF3_deltaETA, this.Matrix[i, j + 1].predicted_deltaF4_deltaETA);
+            }
+
+            // Ahora calculamos las Fs de cada celda de la columna siguiente
 
         }
 
@@ -184,6 +206,8 @@ namespace LIBRERIA_CLASES
                 // Calculamos el Predictor Step:
                 this.CalculatePRedictorStep(j);
 
+                // Calculamos el corrector Step
+                this.CalculateCorrectorStep(j);
 
 
 
