@@ -42,7 +42,7 @@ namespace WPF_APP
             Matriz Matrix = new Matriz(rows, columns);
             double U1 = M1 * Math.Sqrt(R * gamma * T1);
             Matrix.SetInitialConditions(M1, U1, 0, P1, rho1, T1, theta, gamma, R);
-            Matrix.CalculateSteps();
+            Matrix.CalculateSteps(theta, gamma, R);
         }
     }
 }

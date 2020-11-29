@@ -85,11 +85,11 @@ namespace LIBRERIA_CLASES
             }
         }
 
-        public void RellenarColumnadeCeldas(int j)
+        public void RellenarColumnadeCeldas(int j, double Theta, double gamma, double R)
         {
             for (int i = 0; i < rows; i++)
             {
-                this.Matrix[i, j] = new Celda();
+                this.Matrix[i, j] = new Celda(Theta, gamma, R);
             }
         }
 
@@ -181,13 +181,6 @@ namespace LIBRERIA_CLASES
             }
 
             // Ahora calculamos las Fs (las de verdad) de cada celda de la columna siguiente
-
-            // Primero calculamos Ppredecida en cada celda de la columna siguiente (la necesitamos para el calculo de SF)
-            for(int i = 0; i < rows; i++)
-            {
-                this.Matrix[i, j].CalculatePredictedP();
-            }
-
             for(int i = 0; i< rows; i++)
             {
                 if(i == 0 || (i+1 == rows))
@@ -207,7 +200,7 @@ namespace LIBRERIA_CLASES
 
 
 
-        public void CalculateSteps()
+        public void CalculateSteps(double Theta, double gamma, double R)
         {
             // Bucle que recorra todas las columnas
 
@@ -216,7 +209,8 @@ namespace LIBRERIA_CLASES
             while((x < L) && (j + 1) < columns)
             {
                 // Cremos las celdas de la nueva columna
-                this.RellenarColumnadeCeldas(j + 1);
+                this.RellenarColumnadeCeldas(j + 1, Theta, gamma, R);
+                this.Calculate_ParametrosCambioVariable(E, H, Theta, j+1);
 
                 // Calculamos deltaX entre la columna anterior y esta
                 this.Compute_Assign_DeltaXI(j);

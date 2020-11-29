@@ -53,9 +53,11 @@ namespace LIBRERIA_CLASES
             this.R = R;
         }
 
-        public Celda()
+        public Celda(double Theta, double gamma, double R)
         {
-
+            this.Theta = Theta;
+            this.gamma = gamma;
+            this.R = R;
         }
 
         public double CalculateTanMax()
@@ -123,9 +125,10 @@ namespace LIBRERIA_CLASES
         {
             double A = (Math.Pow(this.predictedF3, 2) / (2 * this.predictedF1)) - this.predictedF4;
             double B = (this.gamma / (this.gamma - 1)) * this.predictedF1 * this.predictedF2;
-            double C = -1 * ((this.gamma + 1) / (2 * (this.gamma - 1))) * Math.Pow(this.predictedF3, 3);
+            double C = -1 * ((this.gamma + 1) / (2 * (this.gamma - 1))) * Math.Pow(this.predictedF1, 3);
 
-            double predictedRho = ((-B + Math.Sqrt(B * B - 4 * A * C)) / 2 * A);
+            double predictedRho = ((-B + Math.Sqrt(B * B - 4 * A * C)) / (2 * A));
+            this.predictedP = this.predictedF2 - (Math.Pow(this.predictedF1, 2) / predictedRho);
 
             this.predictedG1 = predictedRho * (this.predictedF3 / this.predictedF1);
             this.predictedG2 = this.predictedF3;
@@ -155,17 +158,6 @@ namespace LIBRERIA_CLASES
             this.deltaF2_deltaETA_Average = (1 / 2) * (this.deltaF2_deltaETA + predicted_deltaF2_deltaETA_Siguiente);
             this.deltaF3_deltaETA_Average = (1 / 2) * (this.deltaF3_deltaETA + predicted_deltaF3_deltaETA_Siguiente);
             this.deltaF4_deltaETA_Average = (1 / 2) * (this.deltaF4_deltaETA + predicted_deltaF4_deltaETA_Siguiente);
-        }
-
-        public void CalculatePredictedP()
-        {
-            double A = (Math.Pow(this.predictedF3, 2) / (2 * this.F1)) - this.F4;
-            double B = (this.gamma / (this.gamma - 1)) * this.predictedF1 * this.predictedF2;
-            double C = ((this.gamma + 1) / 2 * (this.gamma - 1)) * Math.Pow(this.predictedF3, 3);
-
-            double predictedRho = (-B + Math.Sqrt(B * B + 4 * A * C)) / (2 * A);
-            double predictedU = this.predictedF1 / predictedRho;
-            this.predictedP = this.predictedF2 - this.predictedF1 * predictedU;
         }
 
         public void CalculateF_NextColumn_Boundary(double F1_anterior, double F2_anterior, double F3_anterior, double F4_anterior, double dF1_dETA_anterior, double dF2_dETA_anterior, double dF3_dETA_anterior, double dF4_dETA_anterior, double DeltaETA)
