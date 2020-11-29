@@ -180,8 +180,29 @@ namespace LIBRERIA_CLASES
                 this.Matrix[i, j].CalculateDeltaF_DeltaETA_Average(this.Matrix[i,j + 1].predicted_deltaF1_deltaETA, this.Matrix[i, j + 1].predicted_deltaF2_deltaETA, this.Matrix[i, j + 1].predicted_deltaF3_deltaETA, this.Matrix[i, j + 1].predicted_deltaF4_deltaETA);
             }
 
-            // Ahora calculamos las Fs de cada celda de la columna siguiente
+            // Ahora calculamos las Fs (las de verdad) de cada celda de la columna siguiente
 
+            // Primero calculamos Ppredecida en cada celda de la columna siguiente (la necesitamos para el calculo de SF)
+            for(int i = 0; i < rows; i++)
+            {
+                this.Matrix[i, j].CalculatePredictedP();
+            }
+
+            for(int i = 0; i< rows; i++)
+            {
+                if(i == 0 || (i+1 == rows))
+                {
+                    this.Matrix[i, j + 1].CalculateF_NextColumn_Boundary(this.Matrix[i, j].F1, this.Matrix[i, j].F2, this.Matrix[i, j].F3, this.Matrix[i, j].F4, this.Matrix[i, j].deltaF1_deltaETA_Average, this.Matrix[i, j].deltaF2_deltaETA_Average, this.Matrix[i, j].deltaF3_deltaETA_Average, this.Matrix[i, j].deltaF4_deltaETA_Average, deltaETA);
+                }
+                else
+                {
+                    this.Matrix[i, j + 1].CalculateF_NextColumn(this.Matrix[i, j].F1, this.Matrix[i + 1, j + 1].predictedF1, this.Matrix[i - 1, j + 1].predictedF1, this.Matrix[i, j].F2,
+                        this.Matrix[i + 1, j + 1].predictedF2, this.Matrix[i - 1, j + 1].predictedF3, this.Matrix[i, j].F3, this.Matrix[i + 1, j + 1].predictedF3,
+                        this.Matrix[i - 1, j + 1].predictedF3, this.Matrix[i, j].F4, this.Matrix[i + 1, j + 1].predictedF4, this.Matrix[i - 1, j + 1].predictedF4, 
+                        this.Matrix[i, j].deltaF1_deltaETA_Average, this.Matrix[i, j].deltaF2_deltaETA_Average, this.Matrix[i, j].deltaF3_deltaETA_Average, this.Matrix[i, j].deltaF4_deltaETA_Average, 
+                        this.Matrix[i + 1, j + 1].predictedP, this.Matrix[i - 1, j + 1].predictedP, deltaETA);
+                }
+            }
         }
 
 

@@ -15,6 +15,7 @@ namespace LIBRERIA_CLASES
         public double U;
         public double V;
         public double P;
+        public double predictedP;
         public double rho;
         public double T;
         public double Theta;
@@ -154,6 +155,38 @@ namespace LIBRERIA_CLASES
             this.deltaF2_deltaETA_Average = (1 / 2) * (this.deltaF2_deltaETA + predicted_deltaF2_deltaETA_Siguiente);
             this.deltaF3_deltaETA_Average = (1 / 2) * (this.deltaF3_deltaETA + predicted_deltaF3_deltaETA_Siguiente);
             this.deltaF4_deltaETA_Average = (1 / 2) * (this.deltaF4_deltaETA + predicted_deltaF4_deltaETA_Siguiente);
+        }
+
+        public void CalculatePredictedP()
+        {
+            double A = (Math.Pow(this.predictedF3, 2) / (2 * this.F1)) - this.F4;
+            double B = (this.gamma / (this.gamma - 1)) * this.predictedF1 * this.predictedF2;
+            double C = ((this.gamma + 1) / 2 * (this.gamma - 1)) * Math.Pow(this.predictedF3, 3);
+
+            double predictedRho = (-B + Math.Sqrt(B * B + 4 * A * C)) / (2 * A);
+            double predictedU = this.predictedF1 / predictedRho;
+            this.predictedP = this.predictedF2 - this.predictedF1 * predictedU;
+        }
+
+        public void CalculateF_NextColumn_Boundary(double F1_anterior, double F2_anterior, double F3_anterior, double F4_anterior, double dF1_dETA_anterior, double dF2_dETA_anterior, double dF3_dETA_anterior, double dF4_dETA_anterior, double DeltaETA)
+        {
+            this.F1 = F1_anterior + dF1_dETA_anterior * DeltaETA;
+            this.F2 = F2_anterior + dF2_dETA_anterior * DeltaETA;
+            this.F3 = F3_anterior + dF3_dETA_anterior * DeltaETA;
+            this.F4 = F4_anterior + dF4_dETA_anterior * DeltaETA;
+        }
+
+        public void CalculateF_NextColumn(double F1_anterior, double F1_arriba, double F1_abajo, double F2_anterior,double F2_arriba, double F2_abajo, double F3_anterior,double F3_arriba, double F3_abajo, double F4_anterior,double F4_arriba, double F4_abajo, double dF1_dETA_anterior, double dF2_dETA_anterior, double dF3_dETA_anterior, double dF4_dETA_anterior, double P_arriba, double P_abajo, double DeltaETA)
+        {
+            double predictedSF1 = (Cy * Math.Abs(P_arriba - 2 * this.predictedP + P_abajo) / (P_arriba + 2 * this.predictedP + P_abajo)) * (F1_arriba - 2 * this.predictedF1 + F1_abajo);
+            double predictedSF2 = (Cy * Math.Abs(P_arriba - 2 * this.predictedP + P_abajo) / (P_arriba + 2 * this.predictedP + P_abajo)) * (F2_arriba - 2 * this.predictedF2 + F2_abajo);
+            double predictedSF3 = (Cy * Math.Abs(P_arriba - 2 * this.predictedP + P_abajo) / (P_arriba + 2 * this.predictedP + P_abajo)) * (F3_arriba - 2 * this.predictedF3 + F3_abajo);
+            double predictedSF4 = (Cy * Math.Abs(P_arriba - 2 * this.predictedP + P_abajo) / (P_arriba + 2 * this.predictedP + P_abajo)) * (F4_arriba - 2 * this.predictedF4 + F4_abajo);
+
+            this.F1 = (F1_anterior + dF1_dETA_anterior * DeltaETA) + predictedSF1;
+            this.F2 = (F2_anterior + dF2_dETA_anterior * DeltaETA) + predictedSF2;
+            this.F3 = (F3_anterior + dF3_dETA_anterior * DeltaETA) + predictedSF3;
+            this.F4 = (F4_anterior + dF4_dETA_anterior * DeltaETA) + predictedSF4;
         }
     }
 }
