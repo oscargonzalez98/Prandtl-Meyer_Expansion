@@ -198,6 +198,22 @@ namespace LIBRERIA_CLASES
             }
         }
 
+        public void CalculateParametersNextColumn(int j)
+        {
+            for(int i = 0; i < rows; i++)
+            {
+                // Hay que aplicar la parte de la "influencia" del suelo
+                if (i == 0)
+                {
+
+                }
+
+                else
+                {
+                    this.Matrix[i, j + 1].CalculateParametersNextColumn();
+                }
+            }
+        }
 
 
         public void CalculateSteps(double Theta, double gamma, double R)
@@ -224,12 +240,11 @@ namespace LIBRERIA_CLASES
                 // Calculamos el corrector Step
                 this.CalculateCorrectorStep(j);
 
-
+                // Calculamos Valores siguiente columna
+                this.CalculateParametersNextColumn(j);
 
                 j++;
             }
         }
-
-
     }
 }

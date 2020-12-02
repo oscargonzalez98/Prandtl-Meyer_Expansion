@@ -180,5 +180,33 @@ namespace LIBRERIA_CLASES
             this.F3 = (F3_anterior + dF3_dETA_anterior * DeltaETA) + predictedSF3;
             this.F4 = (F4_anterior + dF4_dETA_anterior * DeltaETA) + predictedSF4;
         }
+
+        public void CalculateParametersNextColumn()
+        {
+            double A = (Math.Pow(this.F3, 2) / (2 * this.F1)) - this.F4;
+            double B = (this.gamma / (this.gamma - 1)) * this.F1 * this.F2;
+            double C = -1 * ((this.gamma + 1) / (2 * (this.gamma - 1))) * Math.Pow(this.F1, 3);
+
+            this.rho = ((-B + Math.Sqrt(B * B - 4 * A * C)) / (2 * A));
+            this.U = this.F1 / this.rho;
+            this.V = this.F3 / this.F1;
+            this.P = this.F2 - (Math.Pow(this.F1, 2) / this.rho);
+            this.T = this.P / (this.rho / R);
+        }
+
+        public void CalculateParametersNextColumn_boundary()
+        {
+
+
+            double A = (Math.Pow(this.F3, 2) / (2 * this.F1)) - this.F4;
+            double B = (this.gamma / (this.gamma - 1)) * this.F1 * this.F2;
+            double C = -1 * ((this.gamma + 1) / (2 * (this.gamma - 1))) * Math.Pow(this.F1, 3);
+
+            double rho_cal = ((-B + Math.Sqrt(B * B - 4 * A * C)) / (2 * A));
+            this.U = this.F1 / this.rho;
+            this.V = this.F3 / this.F1;
+            double P_cal = this.F2 - (Math.Pow(this.F1, 2) / this.rho);
+            double T_cal = this.P / (this.rho / R);
+        }
     }
 }
