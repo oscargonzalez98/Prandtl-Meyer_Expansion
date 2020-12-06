@@ -24,6 +24,7 @@
         <Button Name="bt_Calculate" Content="Calculate" Height="21" Canvas.Left="138" Canvas.Top="357" Width="148" Click="bt_Calculate_Click"/>
         <Label Content="R:" Height="30" Canvas.Left="82" Canvas.Top="264" Width="63"/>
         <TextBox x:Name="tb_R" Height="16" Canvas.Left="150" Canvas.Top="271" Text="287" TextWrapping="Wrap" Width="136"/>
+        <DataGrid Height="707" Canvas.Left="777" Canvas.Top="231" Width="1064"/>
 
     </Canvas>
 </Window>
