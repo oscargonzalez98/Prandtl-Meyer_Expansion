@@ -230,14 +230,14 @@ namespace LIBRERIA_CLASES
             double M_cal = Math.Sqrt(Math.Pow(this.U, 2) + Math.Pow(this.V, 2)) / Math.Sqrt(this.gamma * this.R * T_cal);
             double f_cal = Math.Sqrt((this.gamma + 1) / (this.gamma - 1)) * Math.Atan(Math.Sqrt(((this.gamma - 1) / (this.gamma + 1)) * (Math.Pow(M_cal, 2) - 1))) - Math.Atan(Math.Sqrt(Math.Pow(M_cal, 2) - 1));
 
-            if (x > E)
-            {
-                this.V = -(this.U * Math.Tan(this.Theta * Math.PI / 180));
-            }
-            else
-            {
-                this.V = 0;
-            }
+            //if (x > E)
+            //{
+            //    this.V = -(this.U * Math.Tan(this.Theta * Math.PI / 180));
+            //}
+            //else
+            //{
+            //    this.V = 0;
+            //}
 
             double fi;
 
@@ -296,8 +296,8 @@ namespace LIBRERIA_CLASES
 
             this.G1 = this.rho * this.V;
             this.G2 = this.rho * this.U * this.V;
-            this.G3 = this.rho * this.V * this.V + this.P;
-            this.G4 = (this.gamma / (this.gamma - 1)) * this.P * this.V + this.rho * this.V * (((this.U * this.U) + (this.V * this.V)) / 2);
+            this.G3 = (this.rho * this.V * this.V) + this.P;
+            this.G4 = ((this.gamma / (this.gamma - 1)) * this.P * this.V) + (this.rho * this.V * (((this.U * this.U) + (this.V * this.V)) / 2));
         }
     }
 }
