@@ -43,7 +43,7 @@ namespace LIBRERIA_CLASES
                 this.Matrix[i, 0].F1 = rho * U;
                 this.Matrix[i, 0].F2 = rho * U * U + P;
                 this.Matrix[i, 0].F3 = rho * U * V;
-                this.Matrix[i, 0].F4 = (gamma / (gamma - 1)) * P * U + rho * U * (((U * U) + (V * V)) / 2);
+                this.Matrix[i, 0].F4 = ((gamma / (gamma - 1)) * P * U) + (rho * U * (((U * U) + (V * V)) / 2));
 
                 this.Matrix[i, 0].G1 = rho * V;
                 this.Matrix[i, 0].G2 = rho * U * V;
@@ -82,7 +82,7 @@ namespace LIBRERIA_CLASES
                     this.Matrix[i, j].h = H + (x - E) * Math.Tan(theta);
                     this.Matrix[i, j].y_s = - (x - E) * Math.Tan(theta);
 
-                    this.Matrix[i,j].ETA = (this.Matrix[i,j].y - this.Matrix[i,j].y_s) / this.Matrix[i,j].h;
+                    this.Matrix[i, j].ETA = (this.Matrix[i, j].y - this.Matrix[i, j].y_s) / this.Matrix[i, j].h;
                     this.Matrix[i, j].dETA_dX = (1 - this.Matrix[i,j].ETA) * Math.Tan(theta) / this.Matrix[i,j].h;
                 }
 
@@ -136,14 +136,14 @@ namespace LIBRERIA_CLASES
                     this.Matrix[i, j].CalculateDeltaF_DeltaETA(
                         this.Matrix[i + 1, j].F1, this.Matrix[i + 1, j].F2, this.Matrix[i + 1, j].F3, this.Matrix[i + 1, j].F4, 
                         this.Matrix[i + 1, j].G1, this.Matrix[i + 1, j].G2, this.Matrix[i + 1, j].G3, this.Matrix[i + 1, j].G4,
-                        deltaXI);
+                        deltaETA);
                 }
                 else // estamos en la boundary, asi que hacemos una backward difference
                 {
                     this.Matrix[i, j].CalculateDeltaF_DeltaETA_Boundary(
                         this.Matrix[i - 1, j].F1, this.Matrix[i - 1, j].F2, this.Matrix[i - 1, j].F3, this.Matrix[i - 1, j].F4, 
                         this.Matrix[i - 1, j].G1, this.Matrix[i - 1, j].G2, this.Matrix[i - 1, j].G3, this.Matrix[i - 1, j].G4,
-                        deltaXI);
+                        deltaETA);
                 }
             }
 
@@ -152,10 +152,11 @@ namespace LIBRERIA_CLASES
             {
                 if( i == 0) // estamos en una boundary, no tenemos en cuenta la friccion artificial
                 {
+                    
                     this.Matrix[i, j + 1].CalculatePredictedF_NextColumn_Boundary(
                         this.Matrix[i, j].F1, this.Matrix[i, j].F2, this.Matrix[i, j].F3, this.Matrix[i, j].F4,
                         this.Matrix[i, j].deltaF1_deltaETA, this.Matrix[i, j].deltaF2_deltaETA, this.Matrix[i, j].deltaF3_deltaETA, this.Matrix[i, j].deltaF4_deltaETA, 
-                        deltaETA);
+                        deltaXI);
                 }
                 else if(i+1 == rows)
                 {
@@ -172,8 +173,7 @@ namespace LIBRERIA_CLASES
                         this.Matrix[i, j].F3, this.Matrix[i + 1, j].F3, this.Matrix[i - 1, j].F3, 
                         this.Matrix[i, j].F4, this.Matrix[i + 1, j].F4, this.Matrix[i - 1, j].F4, 
                         this.Matrix[i, j].deltaF1_deltaETA, this.Matrix[i, j].deltaF2_deltaETA, this.Matrix[i, j].deltaF3_deltaETA, this.Matrix[i, j].deltaF4_deltaETA, 
-                        deltaETA,
-                        this.Matrix[i, j].P, this.Matrix[i + 1, j].P, this.Matrix[i - 1, j].P);
+                        this.Matrix[i, j].P, this.Matrix[i + 1, j].P, this.Matrix[i - 1, j].P, deltaXI);
                 }
             }
 
@@ -194,14 +194,14 @@ namespace LIBRERIA_CLASES
                     this.Matrix[i, j + 1].CalculatePredicted_dF_dETA_NextColumn_Boundary(
                         this.Matrix[i + 1, j + 1].predictedF1, this.Matrix[i + 1, j + 1].predictedF2, this.Matrix[i + 1, j + 1].predictedF3, this.Matrix[i + 1, j + 1].predictedF4,
                         this.Matrix[i + 1, j + 1].predictedG1, this.Matrix[i + 1, j + 1].predictedG2, this.Matrix[i + 1, j + 1].predictedG3, this.Matrix[i + 1, j + 1].predictedG4,
-                        deltaXI, this.Matrix[i,j].dETA_dX) ;
+                        deltaXI, deltaETA, this.Matrix[i,j].dETA_dX) ;
                 }
                 else
                 {
                     this.Matrix[i, j + 1].CalculatePredicted_dF_dETA_NextColumn(
                         this.Matrix[i - 1, j + 1].predictedF1, this.Matrix[i - 1, j + 1].predictedF2, this.Matrix[i - 1, j + 1].predictedF3, this.Matrix[i - 1, j + 1].predictedF4,
                         this.Matrix[i - 1, j + 1].predictedG1, this.Matrix[i - 1, j + 1].predictedG2, this.Matrix[i - 1, j + 1].predictedG3, this.Matrix[i - 1, j + 1].predictedG4,
-                        deltaXI, this.Matrix[i, j].dETA_dX);
+                        deltaETA, this.Matrix[i, j].dETA_dX);
                 }
             }
 
@@ -220,7 +220,7 @@ namespace LIBRERIA_CLASES
                     this.Matrix[i, j + 1].CalculateF_NextColumn_Boundary(
                         this.Matrix[i, j].F1, this.Matrix[i, j].F2, this.Matrix[i, j].F3, this.Matrix[i, j].F4, 
                         this.Matrix[i, j].deltaF1_deltaETA_Average, this.Matrix[i, j].deltaF2_deltaETA_Average, this.Matrix[i, j].deltaF3_deltaETA_Average, this.Matrix[i, j].deltaF4_deltaETA_Average,
-                        deltaETA);
+                        deltaXI);
                 }
                 else
                 {
@@ -230,11 +230,11 @@ namespace LIBRERIA_CLASES
                         this.Matrix[i, j].F3, this.Matrix[i + 1, j + 1].predictedF3, this.Matrix[i - 1, j + 1].predictedF3, 
                         this.Matrix[i, j].F4, this.Matrix[i + 1, j + 1].predictedF4, this.Matrix[i - 1, j + 1].predictedF4, 
                         this.Matrix[i, j].deltaF1_deltaETA_Average, this.Matrix[i, j].deltaF2_deltaETA_Average, this.Matrix[i, j].deltaF3_deltaETA_Average, this.Matrix[i, j].deltaF4_deltaETA_Average, 
-                        this.Matrix[i + 1, j + 1].predictedP, this.Matrix[i - 1, j + 1].predictedP, deltaETA);
+                        this.Matrix[i + 1, j + 1].predictedP, this.Matrix[i - 1, j + 1].predictedP, deltaXI);
                 }
             }
         }
-
+ 
         public void CalculateParametersNextColumn(int j)
         {
             for(int i = 0; i < rows; i++)
@@ -266,10 +266,14 @@ namespace LIBRERIA_CLASES
 
                 // Calculamos deltaX entre la columna anterior y esta
                 double deltaXI = this.Compute_Assign_DeltaXI(j);
-                //this.Calculate_ParametrosCambioVariable(E, H, Theta, j + 1);
 
                 // Calculamos deltaETA / deltaX
                 this.CalculateDeltaETA_DeltaX(j);
+
+                if (j == 10)
+                {
+
+                }
 
                 // Calculamos el Predictor Step:
                 this.CalculatePredictorStep(j, deltaXI);
@@ -287,7 +291,7 @@ namespace LIBRERIA_CLASES
             {
                 for (j = 0; j < columns; j++)
                 {
-                    Trace.Write(this.Matrix[i, j].F1 + "\t");
+                    Trace.Write(this.Matrix[i, j].F3 + "\t");
                 }
                 Trace.Write("\n");
             }
