@@ -291,7 +291,7 @@ namespace LIBRERIA_CLASES
             {
                 for (j = 0; j < columns; j++)
                 {
-                    Trace.Write(this.Matrix[i, j].F3 + "\t");
+                    Trace.Write(this.Matrix[i, j].U + "\t");
                 }
                 Trace.Write("\n");
             }
