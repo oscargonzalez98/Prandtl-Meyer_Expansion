@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MaterialDesignThemes" Version="4.0.0-ci2305" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\LIBRERIA CLASES\LIBRERIA CLASES.csproj" />
   </ItemGroup>
 

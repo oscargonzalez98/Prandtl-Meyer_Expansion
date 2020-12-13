@@ -113,7 +113,10 @@ namespace LIBRERIA_CLASES
             for (int i = 0; i < rows; i++)
             {
                 this.Matrix[i, j + 1].x = this.Matrix[i, j].x + deltaXI;
+                this.Matrix[i, j].deltaXI = deltaXI;
             }
+
+
 
             return deltaXI;
         }
@@ -270,11 +273,6 @@ namespace LIBRERIA_CLASES
                 // Calculamos deltaETA / deltaX
                 this.CalculateDeltaETA_DeltaX(j);
 
-                if (j == 10)
-                {
-
-                }
-
                 // Calculamos el Predictor Step:
                 this.CalculatePredictorStep(j, deltaXI);
 
@@ -294,6 +292,14 @@ namespace LIBRERIA_CLASES
                     Trace.Write(this.Matrix[i, j].U + "\t");
                 }
                 Trace.Write("\n");
+            }
+        }
+
+        public void CalculatePolygons()
+        {
+            for(int i = 0; i<rows; i++)
+            {
+
             }
         }
     }

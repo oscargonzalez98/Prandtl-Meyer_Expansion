@@ -25,6 +25,7 @@ namespace LIBRERIA_CLASES
 
         public double ETA;
         public double XI;
+        public double deltaXI;
 
         public double h;
         public double y_s;
@@ -322,6 +323,11 @@ namespace LIBRERIA_CLASES
             this.G2 = this.F3;
             this.G3 = (this.rho * (Math.Pow((this.F3 / this.F1), 2))) + this.F2 - ((Math.Pow(this.F1, 2)) / this.rho);
             this.G4 = ((this.gamma / (this.gamma - 1)) * ((this.F2) - ((Math.Pow(this.F1, 2)) / this.rho)) * (this.F3 / this.F1)) + (((this.rho * this.F3) / (2 * this.F1)) * ((Math.Pow((this.F1 / this.rho), 2)) + (Math.Pow((this.F3 / this.F1), 2))));
+        }
+
+        public void CalculatePolygon()
+        {
+
         }
     }
 }
