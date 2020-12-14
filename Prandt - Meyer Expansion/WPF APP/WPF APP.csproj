@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="4.0.0-ci2305" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>

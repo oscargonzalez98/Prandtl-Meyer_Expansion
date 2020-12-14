@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Shapes;
+using System.Windows.Media;
+using System.Windows;
+using Microsoft.Win32;
+using System.IO;
 
 namespace LIBRERIA_CLASES
 {
@@ -41,6 +46,8 @@ namespace LIBRERIA_CLASES
         public double deltaF1_deltaETA, deltaF2_deltaETA, deltaF3_deltaETA, deltaF4_deltaETA;
         public double predicted_deltaF1_deltaETA, predicted_deltaF2_deltaETA, predicted_deltaF3_deltaETA, predicted_deltaF4_deltaETA;
         public double deltaF1_deltaETA_Average, deltaF2_deltaETA_Average, deltaF3_deltaETA_Average, deltaF4_deltaETA_Average;
+
+        public Polygon poligono = new Polygon();
 
         public Celda(double M, double U, double V, double P, double rho, double T, double Theta, double gamma, double R)
         {
@@ -325,9 +332,25 @@ namespace LIBRERIA_CLASES
             this.G4 = ((this.gamma / (this.gamma - 1)) * ((this.F2) - ((Math.Pow(this.F1, 2)) / this.rho)) * (this.F3 / this.F1)) + (((this.rho * this.F3) / (2 * this.F1)) * ((Math.Pow((this.F1 / this.rho), 2)) + (Math.Pow((this.F3 / this.F1), 2))));
         }
 
-        public void CalculatePolygon()
+        public void CalculatePolygon(double y_up)
         {
+            PointCollection points = new PointCollection();
 
+            //Point left_down = new Point(this.x * 10, this.y * 10);
+            //Point right_down = new Point((this.x + deltaXI) * 10, this.y * 10);
+            //Point right_up = new Point((this.x + deltaXI) * 10, y_up * 10);
+            //Point left_up = new Point(this.x * 10, y_up * 10);
+
+            points.Add(new Point(this.x*10, this.y*10));
+            points.Add(new Point((this.x + deltaXI) * 10, this.y*10));
+            points.Add(new Point((this.x + deltaXI) * 10, y_up*10));
+            points.Add(new Point(this.x*10, y_up*10));
+
+            poligono.Points = points;
+
+            poligono.Stroke = Brushes.Black;
+            poligono.StrokeThickness = 1;
+            poligono.Fill = Brushes.Red;
         }
     }
 }

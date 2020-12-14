@@ -19,6 +19,12 @@
         </Grid>
 
         <Canvas VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="1200" Height="820">
+            <Canvas x:Name="canvas" Width="450" Height="450" Canvas.Left="326" Canvas.Top="490" Background="AliceBlue">
+                <Canvas.RenderTransform>
+                    <ScaleTransform ScaleY="-1"/>
+                </Canvas.RenderTransform>
+            </Canvas>
+
             <Label Content="M:" Height="30" Canvas.Left="115" Canvas.Top="70" Width="30"/>
             <Label Content="P:" Height="30" Canvas.Left="115" Canvas.Top="100" Width="30"/>
             <Label Content="ρ:" Height="30" Canvas.Left="115" Canvas.Top="130" Width="30"/>
@@ -27,15 +33,16 @@
             <Label Content="Gamma:" Height="30" Canvas.Left="82" Canvas.Top="220" Width="63"/>
             <Label Content="R:" Height="30" Canvas.Left="113" Canvas.Top="250" Width="30"/>
 
-            <TextBox Name="tb_M" Height="16" Canvas.Left="150" Canvas.Top="75" Text="2" TextWrapping="Wrap" Width="136"/>
-            <TextBox Name="tb_P" Height="16" Canvas.Left="150" Canvas.Top="107" Text="1.01e5" TextWrapping="Wrap" Width="136"/>
-            <TextBox Name="tb_rho" Height="16" Canvas.Left="150" Canvas.Top="140" Text="1.23" TextWrapping="Wrap" Width="136"/>
-            <TextBox Name="tb_T" Height="16" Canvas.Left="150" Canvas.Top="170" Text="286.1" TextWrapping="Wrap" Width="136"/>
-            <TextBox Name="tb_theta" Height="16" Canvas.Left="150" Canvas.Top="197" Text="5.352" TextWrapping="Wrap" Width="136"/>
+            <TextBox x:Name="tb_M" Height="16" Canvas.Left="150" Canvas.Top="75" Text="2" TextWrapping="Wrap" Width="136"/>
+            <TextBox x:Name="tb_P" Height="16" Canvas.Left="150" Canvas.Top="107" Text="1.01e5" TextWrapping="Wrap" Width="136"/>
+            <TextBox x:Name="tb_rho" Height="16" Canvas.Left="150" Canvas.Top="140" Text="1.23" TextWrapping="Wrap" Width="136"/>
+            <TextBox x:Name="tb_T" Height="16" Canvas.Left="150" Canvas.Top="170" Text="286.1" TextWrapping="Wrap" Width="136"/>
+            <TextBox x:Name="tb_theta" Height="16" Canvas.Left="150" Canvas.Top="197" Text="5.352" TextWrapping="Wrap" Width="136"/>
             <TextBox x:Name="tb_Gamma" Height="16" Canvas.Left="150" Canvas.Top="227" Text="1.4" TextWrapping="Wrap" Width="136"/>
             <TextBox x:Name="tb_R" Height="16" Canvas.Left="150" Canvas.Top="255" Text="287" TextWrapping="Wrap" Width="136"/>
 
-            <Button Name="bt_Calculate" Content="Calculate" Height="21" Canvas.Left="138" Canvas.Top="309" Width="148" Click="bt_Calculate_Click"/>
+            <Button x:Name="bt_Calculate" Content="Calculate" Height="21" Canvas.Left="138" Canvas.Top="309" Width="148" Click="bt_Calculate_Click"/>
+
 
         </Canvas>
 

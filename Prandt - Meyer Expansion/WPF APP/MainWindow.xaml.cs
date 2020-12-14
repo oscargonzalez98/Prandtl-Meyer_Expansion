@@ -39,10 +39,33 @@ namespace WPF_APP
             double gamma = Convert.ToDouble(tb_Gamma.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
             double R = Convert.ToDouble(tb_R.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
 
-            Matriz Matrix = new Matriz(rows, columns);
+            Matriz matrix = new Matriz(rows, columns);
             double U1 = M1 * Math.Sqrt(R * gamma * T1);
-            Matrix.SetInitialConditions(M1, U1, 0, P1, rho1, T1, theta, gamma, R);
-            Matrix.CalculateSteps(theta, gamma, R);
+            matrix.SetInitialConditions(M1, U1, 0, P1, rho1, T1, theta, gamma, R);
+            matrix.CalculateSteps(theta, gamma, R);
+
+            matrix.CalculatePolygons();
+
+            for (int j = 0; j < columns; j++)
+            {
+                for (int i = 0; i < rows - 1; i++)
+                {
+                    canvas.Children.Add(matrix.Matrix[i, j].poligono);
+
+                    matrix.Matrix[i, j].poligono.MouseEnter += Graphic_MouseEnter;
+                    matrix.Matrix[i, j].poligono.MouseLeave += Graphic_MouseLeave;
+                }
+            }
+        }
+
+        private void Graphic_MouseLeave(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void Graphic_MouseEnter(object sender, MouseEventArgs e)
+        {
+
         }
     }
 }

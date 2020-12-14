@@ -11,7 +11,7 @@ namespace LIBRERIA_CLASES
         int rows;
         int columns;
 
-        Celda[,] Matrix;
+        public Celda[,] Matrix;
 
         double E = 10;
         double Theta = 5.352;
@@ -82,7 +82,7 @@ namespace LIBRERIA_CLASES
                     this.Matrix[i, j].h = H + (x - E) * Math.Tan(theta);
                     this.Matrix[i, j].y_s = - (x - E) * Math.Tan(theta);
 
-                    this.Matrix[i, j].ETA = (this.Matrix[i, j].y - this.Matrix[i, j].y_s) / this.Matrix[i, j].h;
+                    //double ETA = (this.Matrix[i, j].y - this.Matrix[i, j].y_s) / this.Matrix[i, j].h;
                     this.Matrix[i, j].dETA_dX = (1 - this.Matrix[i,j].ETA) * Math.Tan(theta) / this.Matrix[i,j].h;
                 }
 
@@ -115,8 +115,6 @@ namespace LIBRERIA_CLASES
                 this.Matrix[i, j + 1].x = this.Matrix[i, j].x + deltaXI;
                 this.Matrix[i, j].deltaXI = deltaXI;
             }
-
-
 
             return deltaXI;
         }
@@ -260,8 +258,13 @@ namespace LIBRERIA_CLASES
 
             double x = this.Matrix[0, 0].x;
             int j = 0;
-            while ((x < L) && (j + 1) < columns)
+            while ((j + 1) < columns)
             {
+                if (this.Matrix[0, j].x > 10)
+                {
+
+                }
+
                 // Cremos las celdas de la nueva columna
                 this.RellenarColumnadeCeldas(j + 1, Theta, gamma, R);
                 this.Calculate_ParametrosCambioVariable(E, H, Theta, j);
@@ -289,7 +292,7 @@ namespace LIBRERIA_CLASES
             {
                 for (j = 0; j < columns; j++)
                 {
-                    Trace.Write(this.Matrix[i, j].U + "\t");
+                    Trace.Write(this.Matrix[i, j].dETA_dX + "\t");
                 }
                 Trace.Write("\n");
             }
@@ -297,9 +300,14 @@ namespace LIBRERIA_CLASES
 
         public void CalculatePolygons()
         {
-            for(int i = 0; i<rows; i++)
+            double x = 0;
+            for(int j = 0; j<columns && x<L; j++)
             {
-
+                x = this.Matrix[0, j].x;
+                for (int i = 0; i < rows - 1; i++)
+                {
+                    this.Matrix[i, j].CalculatePolygon(this.Matrix[i + 1, j].y);
+                }
             }
         }
     }

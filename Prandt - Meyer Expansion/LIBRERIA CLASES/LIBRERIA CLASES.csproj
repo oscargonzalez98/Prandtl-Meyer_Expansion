@@ -5,4 +5,9 @@
     <RootNamespace>LIBRERIA_CLASES</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Xaml" Version="4.0.0.1" />
+    <PackageReference Include="PresentationFramework" Version="4.6.0" />
+  </ItemGroup>
+
 </Project>
