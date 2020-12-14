@@ -260,11 +260,6 @@ namespace LIBRERIA_CLASES
             int j = 0;
             while ((j + 1) < columns)
             {
-                if (this.Matrix[0, j].x > 10)
-                {
-
-                }
-
                 // Cremos las celdas de la nueva columna
                 this.RellenarColumnadeCeldas(j + 1, Theta, gamma, R);
                 this.Calculate_ParametrosCambioVariable(E, H, Theta, j);

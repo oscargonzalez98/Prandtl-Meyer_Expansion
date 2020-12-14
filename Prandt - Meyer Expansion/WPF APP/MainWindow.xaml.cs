@@ -21,6 +21,8 @@ namespace WPF_APP
     /// </summary>
     public partial class MainWindow : Window
     {
+        public List<Celda> listPolygons = new List<Celda>();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -52,20 +54,31 @@ namespace WPF_APP
                 {
                     canvas.Children.Add(matrix.Matrix[i, j].poligono);
 
-                    matrix.Matrix[i, j].poligono.MouseEnter += Graphic_MouseEnter;
-                    matrix.Matrix[i, j].poligono.MouseLeave += Graphic_MouseLeave;
+                    matrix.Matrix[i, j].poligono.MouseEnter += Polygon_MouseEnter;
+                    matrix.Matrix[i, j].poligono.MouseLeave += Polygon_MouseLeave;
+
+                    listPolygons.Add(matrix.Matrix[i, j]);
                 }
             }
         }
 
-        private void Graphic_MouseLeave(object sender, MouseEventArgs e)
+        private void Polygon_MouseLeave(object sender, MouseEventArgs e)
         {
 
         }
 
-        private void Graphic_MouseEnter(object sender, MouseEventArgs e)
+        private void Polygon_MouseEnter(object sender, MouseEventArgs e)
         {
+            var i = canvas.Children.IndexOf(sender as Polygon);
 
+            tb_M1.Content = "M = " + listPolygons[i].M.ToString();
+            tb_P1.Content = "P = " + listPolygons[i].P.ToString();
+            tb_rho1.Content = "ρ = " + listPolygons[i].rho.ToString();
+            tb_T1.Content = "T = " + listPolygons[i].T.ToString();
+            tb_U1.Content = "U = " + listPolygons[i].U.ToString();
+            tb_V1.Content = "V = " + listPolygons[i].V.ToString();
+            tb_X1.Content = "X = " + listPolygons[i].x.ToString();
+            tb_Y1.Content = "Y = " + listPolygons[i].y.ToString();
         }
     }
 }
