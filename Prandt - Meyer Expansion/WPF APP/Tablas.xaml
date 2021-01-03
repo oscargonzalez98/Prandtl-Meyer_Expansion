@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Tablas" Height="900" Width="1400" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" Foreground="White">
 
-    <Grid Loaded="Grid_Loaded">
+    <Grid>
         <Grid Height="80" VerticalAlignment="Top" Background="#FF4D79C7">
             <TextBlock Text="PRANDTL - MEYER SIMULATOR" HorizontalAlignment="Center" FontSize="30" VerticalAlignment="Center"/>
             <TextBlock Text="by Carlos Hermoso and Óscar González" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="20" Margin="0,31,25,0"/>
@@ -23,11 +23,11 @@
 
         <StackPanel Height="50" Width="600" Orientation="Horizontal" Background="AliceBlue" Canvas.Left="282" Canvas.Top="498" Margin="500,95,300,755">
             <Button Name="bt_M" Content="M" Width="100" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent" Click="bt_M_Click"/>
-            <Button Name="bt_P" Content="P (Pa)" Width="100" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent"/>
-            <Button Name="bt_Rho" Content="ρ (Kg / m3)" Width="100" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent"/>
-            <Button Name="bt_T" Content="T (K)" Width="100" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent"/>
-            <Button Name="bt_U" Content="U (m / s)" Width="100" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent"/>
-            <Button Name="bt_V" Content="V (m / s)" Width="100" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent"/>
+            <Button Name="bt_P" Content="P (Pa)" Width="100" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent" Click="bt_P_Click"/>
+            <Button Name="bt_Rho" Content="ρ (Kg / m3)" Width="100" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent" Click="bt_Rho_Click"/>
+            <Button Name="bt_T" Content="T (K)" Width="100" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent" Click="bt_T_Click"/>
+            <Button Name="bt_U" Content="U (m / s)" Width="100" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent" Click="bt_U_Click"/>
+            <Button Name="bt_V" Content="V (m / s)" Width="100" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent" Click="bt_V_Click"/>
         </StackPanel>
 
         <DataGrid Name="datagrid" HorizontalAlignment="Left" Height="520" Margin="293,0,0,0" VerticalAlignment="Center" Width="1014"/>

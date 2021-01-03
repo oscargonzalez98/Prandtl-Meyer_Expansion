@@ -47,6 +47,9 @@ namespace LIBRERIA_CLASES
         public double predicted_deltaF1_deltaETA, predicted_deltaF2_deltaETA, predicted_deltaF3_deltaETA, predicted_deltaF4_deltaETA;
         public double deltaF1_deltaETA_Average, deltaF2_deltaETA_Average, deltaF3_deltaETA_Average, deltaF4_deltaETA_Average;
 
+        public double predictedSF1, predictedSF2, predictedSF3, predictedSF4;
+        public double SF1, SF2, SF3, SF4;
+
         public Polygon poligono = new Polygon();
 
         public double nondimensional_M;
@@ -129,15 +132,20 @@ namespace LIBRERIA_CLASES
             double p, double p_arriba, double p_abajo,  
             double deltaXI)
         {
-            double SF1 = (Cy * Math.Abs(p_arriba - 2 * p + p_abajo) / (p_arriba + 2 * p + p_abajo)) * (F1_arriba - 2 * F1 + F1_abajo);
-            double SF2 = (Cy * Math.Abs(p_arriba - 2 * p + p_abajo) / (p_arriba + 2 * p + p_abajo)) * (F2_arriba - 2 * F2 + F2_abajo);
-            double SF3 = (Cy * Math.Abs(p_arriba - 2 * p + p_abajo) / (p_arriba + 2 * p + p_abajo)) * (F3_arriba - 2 * F3 + F3_abajo);
-            double SF4 = (Cy * Math.Abs(p_arriba - 2 * p + p_abajo) / (p_arriba + 2 * p + p_abajo)) * (F4_arriba - 2 * F4 + F4_abajo);
+            SF1 = (Cy * Math.Abs(p_arriba - 2 * p + p_abajo) / (p_arriba + 2 * p + p_abajo)) * (F1_arriba - 2 * F1 + F1_abajo);
+            SF2 = (Cy * Math.Abs(p_arriba - 2 * p + p_abajo) / (p_arriba + 2 * p + p_abajo)) * (F2_arriba - 2 * F2 + F2_abajo);
+            SF3 = (Cy * Math.Abs(p_arriba - 2 * p + p_abajo) / (p_arriba + 2 * p + p_abajo)) * (F3_arriba - 2 * F3 + F3_abajo);
+            SF4 = (Cy * Math.Abs(p_arriba - 2 * p + p_abajo) / (p_arriba + 2 * p + p_abajo)) * (F4_arriba - 2 * F4 + F4_abajo);
 
-            this.predictedF1 = (F1 + dF1_dETA * deltaXI) + SF1;
-            this.predictedF2 = (F2 + dF2_dETA * deltaXI) + SF2;
-            this.predictedF3 = (F3 + dF3_dETA * deltaXI) + SF3;
-            this.predictedF4 = (F4 + dF4_dETA * deltaXI) + SF4;
+            if(SF1 != 0)
+            {
+
+            }
+
+            this.predictedF1 = F1 + (dF1_dETA * deltaXI) /*+ SF1*/;
+            this.predictedF2 = F2 + (dF2_dETA * deltaXI) /*+ SF2*/;
+            this.predictedF3 = F3 + (dF3_dETA * deltaXI) /*+ SF3*/;
+            this.predictedF4 = F4 + (dF4_dETA * deltaXI) /*+ SF4*/;
         }
         public void CalculatePredictedF_NextColumn_Boundary(double F1, double F2, double F3, double F4, double dF1_dETA, double dF2_dETA, double dF3_dETA, double dF4_dETA, double deltaXI)
         {
@@ -202,15 +210,15 @@ namespace LIBRERIA_CLASES
 
         public void CalculateF_NextColumn(double F1_anterior, double F1_arriba, double F1_abajo, double F2_anterior,double F2_arriba, double F2_abajo, double F3_anterior,double F3_arriba, double F3_abajo, double F4_anterior,double F4_arriba, double F4_abajo, double dF1_dETA_anterior, double dF2_dETA_anterior, double dF3_dETA_anterior, double dF4_dETA_anterior, double P_arriba, double P_abajo, double DeltaXI)
         {
-            double predictedSF1 = (Cy * Math.Abs(P_arriba - 2 * this.predictedP + P_abajo) / (P_arriba + 2 * this.predictedP + P_abajo)) * (F1_arriba - 2 * this.predictedF1 + F1_abajo);
-            double predictedSF2 = (Cy * Math.Abs(P_arriba - 2 * this.predictedP + P_abajo) / (P_arriba + 2 * this.predictedP + P_abajo)) * (F2_arriba - 2 * this.predictedF2 + F2_abajo);
-            double predictedSF3 = (Cy * Math.Abs(P_arriba - 2 * this.predictedP + P_abajo) / (P_arriba + 2 * this.predictedP + P_abajo)) * (F3_arriba - 2 * this.predictedF3 + F3_abajo);
-            double predictedSF4 = (Cy * Math.Abs(P_arriba - 2 * this.predictedP + P_abajo) / (P_arriba + 2 * this.predictedP + P_abajo)) * (F4_arriba - 2 * this.predictedF4 + F4_abajo);
+            predictedSF1 = (Cy * Math.Abs(P_arriba - 2 * this.predictedP + P_abajo) / (P_arriba + 2 * this.predictedP + P_abajo)) * (F1_arriba - 2 * this.predictedF1 + F1_abajo);
+            predictedSF2 = (Cy * Math.Abs(P_arriba - 2 * this.predictedP + P_abajo) / (P_arriba + 2 * this.predictedP + P_abajo)) * (F2_arriba - 2 * this.predictedF2 + F2_abajo);
+            predictedSF3 = (Cy * Math.Abs(P_arriba - 2 * this.predictedP + P_abajo) / (P_arriba + 2 * this.predictedP + P_abajo)) * (F3_arriba - 2 * this.predictedF3 + F3_abajo);
+            predictedSF4 = (Cy * Math.Abs(P_arriba - 2 * this.predictedP + P_abajo) / (P_arriba + 2 * this.predictedP + P_abajo)) * (F4_arriba - 2 * this.predictedF4 + F4_abajo);
 
-            this.F1 = (F1_anterior + dF1_dETA_anterior * DeltaXI) + predictedSF1;
-            this.F2 = (F2_anterior + dF2_dETA_anterior * DeltaXI) + predictedSF2;
-            this.F3 = (F3_anterior + dF3_dETA_anterior * DeltaXI) + predictedSF3;
-            this.F4 = (F4_anterior + dF4_dETA_anterior * DeltaXI) + predictedSF4;
+            this.F1 = F1_anterior + (dF1_dETA_anterior * DeltaXI) /*+ predictedSF1*/;
+            this.F2 = F2_anterior + (dF2_dETA_anterior * DeltaXI) /*+ predictedSF2*/;
+            this.F3 = F3_anterior + (dF3_dETA_anterior * DeltaXI) /*+ predictedSF3*/;
+            this.F4 = F4_anterior + (dF4_dETA_anterior * DeltaXI) /*+ predictedSF4*/;
         }
 
         public void CalculateParametersNextColumn()

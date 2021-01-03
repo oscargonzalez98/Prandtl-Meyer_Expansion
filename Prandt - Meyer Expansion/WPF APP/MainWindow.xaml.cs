@@ -27,7 +27,7 @@ namespace WPF_APP
     /// </summary>
     public partial class MainWindow : Window
     {
-        Tablas tablas = new Tablas();
+        Tablas tablas;
 
         public List<Celda> listPolygons = new List<Celda>();
 
@@ -542,16 +542,17 @@ namespace WPF_APP
         public void ShowTables (Tablas tables)
         {
             this.Visibility = Visibility.Hidden;
-            tablas.mainwindow = this;
-            tablas.matrix = matrix;
 
-            if (tables != null)
+            if (tables == null)
             {
-                tables.Visibility = Visibility.Visible;
+                tables = new Tablas(matrix);
+                tables.mainwindow = this;
+                tables.Show();
             }
             else
             {
-                tablas.Show();
+                tables.Visibility = Visibility.Visible;
+                tables.mainwindow = this;
             }
         }
 

@@ -290,7 +290,7 @@ namespace LIBRERIA_CLASES
             //{
             //    for (j = 0; j < columns; j++)
             //    {
-            //        Trace.Write(this.Matrix[i, j].dETA_dX + "\t");
+            //        Trace.Write(this.Matrix[i, j].predictedSF4 + "\t");
             //    }
             //    Trace.Write("\n");
             //}

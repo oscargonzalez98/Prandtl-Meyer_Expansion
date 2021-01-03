@@ -2,6 +2,7 @@
 using LIBRERIA_CLASES;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,47 +21,19 @@ namespace WPF_APP
     public partial class Tablas : Window
     {
         public MainWindow mainwindow;
-        List<string> it = new List<string>();
         public Matriz matrix;
 
-        public Tablas()
+        DataTable dt_M = new DataTable();
+        DataTable dt_P = new DataTable();
+        DataTable dt_Rho = new DataTable();
+        DataTable dt_T = new DataTable();
+        DataTable dt_U = new DataTable();
+        DataTable dt_V = new DataTable();
+
+        public Tablas(Matriz matrix)
         {
             InitializeComponent();
-
-            DataGridTextColumn textColumn = new DataGridTextColumn();
-            textColumn.Header = "Y";
-            textColumn.Binding = new Binding("Y");
-            datagrid.Columns.Add(textColumn);
-
-            textColumn = new DataGridTextColumn();
-            textColumn.Header = "M";
-            textColumn.Binding = new Binding("M");
-            datagrid.Columns.Add(textColumn);
-
-            textColumn = new DataGridTextColumn();
-            textColumn.Header = "P";
-            textColumn.Binding = new Binding("P");
-            datagrid.Columns.Add(textColumn);
-
-            textColumn = new DataGridTextColumn();
-            textColumn.Header = "ρ";
-            textColumn.Binding = new Binding("ρ");
-            datagrid.Columns.Add(textColumn);
-
-            textColumn = new DataGridTextColumn();
-            textColumn.Header = "T";
-            textColumn.Binding = new Binding("T");
-            datagrid.Columns.Add(textColumn);
-
-            textColumn = new DataGridTextColumn();
-            textColumn.Header = "U";
-            textColumn.Binding = new Binding("U");
-            datagrid.Columns.Add(textColumn);
-
-            textColumn = new DataGridTextColumn();
-            textColumn.Header = "V";
-            textColumn.Binding = new Binding("V");
-            datagrid.Columns.Add(textColumn);
+            this.matrix = matrix;
         }
 
         private void btn_Simulation_Click(object sender, RoutedEventArgs e)
@@ -69,24 +42,219 @@ namespace WPF_APP
             mainwindow.Visibility = Visibility.Visible;
         }
 
-        private void Grid_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void bt_M_Click(object sender, RoutedEventArgs e)
         {
             int rows = matrix.Matrix.GetLength(0);
             int columns = matrix.Matrix.GetLength(1);
 
+            // Primero añadimos las columnas
             double x = matrix.Matrix[0, 0].x;
-            for(int j = 0; x<65; j++)
+            int j = 0;
+
+            while (x < 65 && j < columns)
             {
-                it.Add(x.ToString());
+                DataColumn row = new DataColumn(Convert.ToString(""), typeof(double));
+                dt_M.Columns.Add(row);
                 x = matrix.Matrix[0, j].x;
+                j++;
             }
 
-            datagrid.ItemsSource = it;
+
+            for (int i = 0; i< rows; i++)
+            {
+                DataRow row = dt_M.NewRow();
+                x = matrix.Matrix[0, 0].x;
+                j = 0;
+
+                while (x < 65 && j < columns)
+                {
+                    row[j] = Math.Round(this.matrix.Matrix[i, j].M, 4);
+                    x = matrix.Matrix[0, j].x;
+                    j++;
+                }
+                dt_M.Rows.Add(row);
+            }
+
+            datagrid.ItemsSource = dt_M.DefaultView;
+        }
+
+        private void bt_P_Click(object sender, RoutedEventArgs e)
+        {
+            int rows = matrix.Matrix.GetLength(0);
+            int columns = matrix.Matrix.GetLength(1);
+
+            // Primero añadimos las columnas
+            double x = matrix.Matrix[0, 0].x;
+            int j = 0;
+
+            while (x < 65 && j < columns)
+            {
+                DataColumn row = new DataColumn(Convert.ToString(""), typeof(double));
+                dt_P.Columns.Add(row);
+                x = matrix.Matrix[0, j].x;
+                j++;
+            }
+
+
+            for (int i = 0; i < rows; i++)
+            {
+                DataRow row = dt_P.NewRow();
+                x = matrix.Matrix[0, 0].x;
+                j = 0;
+
+                while (x < 65 && j < columns)
+                {
+                    row[j] = Math.Round(this.matrix.Matrix[i, j].P, 4);
+                    x = matrix.Matrix[0, j].x;
+                    j++;
+                }
+                dt_P.Rows.Add(row);
+            }
+
+            datagrid.ItemsSource = dt_P.DefaultView;
+        }
+
+        private void bt_Rho_Click(object sender, RoutedEventArgs e)
+        {
+            int rows = matrix.Matrix.GetLength(0);
+            int columns = matrix.Matrix.GetLength(1);
+
+            // Primero añadimos las columnas
+            double x = matrix.Matrix[0, 0].x;
+            int j = 0;
+
+            while (x < 65 && j < columns)
+            {
+                DataColumn row = new DataColumn(Convert.ToString(""), typeof(double));
+                dt_Rho.Columns.Add(row);
+                x = matrix.Matrix[0, j].x;
+                j++;
+            }
+
+
+            for (int i = 0; i < rows; i++)
+            {
+                DataRow row = dt_Rho.NewRow();
+                x = matrix.Matrix[0, 0].x;
+                j = 0;
+
+                while (x < 65 && j < columns)
+                {
+                    row[j] = Math.Round(this.matrix.Matrix[i, j].rho, 4);
+                    x = matrix.Matrix[0, j].x;
+                    j++;
+                }
+                dt_Rho.Rows.Add(row);
+            }
+
+            datagrid.ItemsSource = dt_Rho.DefaultView;
+        }
+
+        private void bt_T_Click(object sender, RoutedEventArgs e)
+        {
+            int rows = matrix.Matrix.GetLength(0);
+            int columns = matrix.Matrix.GetLength(1);
+
+            // Primero añadimos las columnas
+            double x = matrix.Matrix[0, 0].x;
+            int j = 0;
+
+            while (x < 65 && j < columns)
+            {
+                DataColumn row = new DataColumn(Convert.ToString(""), typeof(double));
+                dt_T.Columns.Add(row);
+                x = matrix.Matrix[0, j].x;
+                j++;
+            }
+
+
+            for (int i = 0; i < rows; i++)
+            {
+                DataRow row = dt_T.NewRow();
+                x = matrix.Matrix[0, 0].x;
+                j = 0;
+
+                while (x < 65 && j < columns)
+                {
+                    row[j] = Math.Round(this.matrix.Matrix[i, j].T, 4);
+                    x = matrix.Matrix[0, j].x;
+                    j++;
+                }
+                dt_T.Rows.Add(row);
+            }
+
+            datagrid.ItemsSource = dt_T.DefaultView;
+        }
+
+        private void bt_U_Click(object sender, RoutedEventArgs e)
+        {
+            int rows = matrix.Matrix.GetLength(0);
+            int columns = matrix.Matrix.GetLength(1);
+
+            // Primero añadimos las columnas
+            double x = matrix.Matrix[0, 0].x;
+            int j = 0;
+
+            while (x < 65 && j < columns)
+            {
+                DataColumn row = new DataColumn(Convert.ToString(""), typeof(double));
+                dt_U.Columns.Add(row);
+                x = matrix.Matrix[0, j].x;
+                j++;
+            }
+
+
+            for (int i = 0; i < rows; i++)
+            {
+                DataRow row = dt_U.NewRow();
+                x = matrix.Matrix[0, 0].x;
+                j = 0;
+
+                while (x < 65 && j < columns)
+                {
+                    row[j] = Math.Round(this.matrix.Matrix[i, j].U, 4);
+                    x = matrix.Matrix[0, j].x;
+                    j++;
+                }
+                dt_U.Rows.Add(row);
+            }
+
+            datagrid.ItemsSource = dt_U.DefaultView;
+        }
+
+        private void bt_V_Click(object sender, RoutedEventArgs e)
+        {
+            int rows = matrix.Matrix.GetLength(0);
+            int columns = matrix.Matrix.GetLength(1);
+
+            // Primero añadimos las columnas
+            double x = matrix.Matrix[0, 0].x;
+            int j = 0;
+
+            while (x < 65 && j < columns)
+            {
+                DataColumn row = new DataColumn(Convert.ToString(""), typeof(double));
+                dt_V.Columns.Add(row);
+                x = matrix.Matrix[0, j].x;
+                j++;
+            }
+
+            for (int i = 0; i < rows; i++)
+            {
+                DataRow row = dt_V.NewRow();
+                x = matrix.Matrix[0, 0].x;
+                j = 0;
+
+                while (x < 65 && j < columns)
+                {
+                    row[j] = Math.Round(this.matrix.Matrix[i, j].V, 4);
+                    x = matrix.Matrix[0, j].x;
+                    j++;
+                }
+                dt_V.Rows.Add(row);
+            }
+
+            datagrid.ItemsSource = dt_V.DefaultView;
         }
     }
 }
