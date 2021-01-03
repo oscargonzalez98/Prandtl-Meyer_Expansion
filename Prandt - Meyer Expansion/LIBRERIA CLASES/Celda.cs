@@ -49,6 +49,8 @@ namespace LIBRERIA_CLASES
 
         public Polygon poligono = new Polygon();
 
+        public double nondimensional_M;
+
         public Celda(double M, double U, double V, double P, double rho, double T, double Theta, double gamma, double R)
         {
             this.M = M;
@@ -332,25 +334,21 @@ namespace LIBRERIA_CLASES
             this.G4 = ((this.gamma / (this.gamma - 1)) * ((this.F2) - ((Math.Pow(this.F1, 2)) / this.rho)) * (this.F3 / this.F1)) + (((this.rho * this.F3) / (2 * this.F1)) * ((Math.Pow((this.F1 / this.rho), 2)) + (Math.Pow((this.F3 / this.F1), 2))));
         }
 
-        public void CalculatePolygon(double y_up)
+        public void CalculatePolygon(double y_up, double y_next)
         {
             PointCollection points = new PointCollection();
 
-            //Point left_down = new Point(this.x * 10, this.y * 10);
-            //Point right_down = new Point((this.x + deltaXI) * 10, this.y * 10);
-            //Point right_up = new Point((this.x + deltaXI) * 10, y_up * 10);
-            //Point left_up = new Point(this.x * 10, y_up * 10);
+            int cnst = 10;
 
-            points.Add(new Point(this.x*10, this.y*10));
-            points.Add(new Point((this.x + deltaXI) * 10, this.y*10));
-            points.Add(new Point((this.x + deltaXI) * 10, y_up*10));
-            points.Add(new Point(this.x*10, y_up*10));
-
-            poligono.Points = points;
+            points.Add(new Point(this.x * cnst, this.y * cnst));
+            points.Add(new Point((this.x + deltaXI) * cnst, y_next * cnst));
+            points.Add(new Point((this.x + deltaXI) * cnst, y_up * cnst));
+            points.Add(new Point(this.x * cnst, y_up * cnst));
 
             poligono.Stroke = Brushes.Black;
-            poligono.StrokeThickness = 1;
-            poligono.Fill = Brushes.Red;
+            poligono.StrokeThickness = 0.5;
+
+            poligono.Points = points;
         }
     }
 }

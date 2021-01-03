@@ -11,20 +11,36 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Grid Width="200" HorizontalAlignment="Left" Background="#FF00486A"/>
+        <Grid Width="200" HorizontalAlignment="Left" Background="#FF00486A" Margin="0,80,0,0">
+            <Button Name="btn_Simulation" Margin="0,48,0,724" Background="#FF4D79C7" BorderBrush="White">
+                <TextBlock Text="Simulación" Foreground="White" />
+            </Button>
+            <Button Name="btn_Tables" Margin="0,96,0,676" Background="#FF00486A" BorderBrush="White" Click="btn_Tables_Click">
+                <TextBlock Text="Tables" Foreground="White" />
+            </Button>
+        </Grid>
 
         <Grid Height="80" VerticalAlignment="Top" Background="#FF4D79C7" Grid.ColumnSpan="2">
             <TextBlock Text="PRANDTL - MEYER SIMULATOR" HorizontalAlignment="Center" FontSize="30" VerticalAlignment="Center"/>
-            <TextBlock Text="by Carlos Hermos and Óscar González    " HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="20"/>
+            <TextBlock Text="by Carlos Hermoso and Óscar González" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="20" Margin="0,31,25,0"/>
         </Grid>
 
-        <Canvas VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="1200" Height="820">
+        <Canvas  VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="1200" Height="820">
 
-            <Canvas x:Name="canvas" Width="689" Height="395" Canvas.Left="225" Canvas.Top="435" Background="AliceBlue">
+            <Canvas x:Name="canvas" Width="689" Height="395" Canvas.Left="225" Canvas.Top="435" Background="White">
                 <Canvas.RenderTransform>
                     <ScaleTransform ScaleY="-1"/>
                 </Canvas.RenderTransform>
             </Canvas>
+
+            <StackPanel Height="50" Width="600" Orientation="Horizontal" Background="AliceBlue" Canvas.Left="282" Canvas.Top="498">
+                <Button Name="bt_M" Content="M" Width="100" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent" Click="bt_M_Click"/>
+                <Button Name="bt_P" Content="P (Pa)" Width="100" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent" Click="bt_P_Click"/>
+                <Button Name="bt_Rho" Content="ρ (Kg / m3)" Width="100" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent" Click="bt_Rho_Click"/>
+                <Button Name="bt_T" Content="T (K)" Width="100" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent" Click="bt_T_Click"/>
+                <Button Name="bt_U" Content="U (m / s)" Width="100" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent" Click="bt_U_Click"/>
+                <Button Name="bt_V" Content="V (m / s)" Width="100" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent" Click="bt_V_Click"/>
+            </StackPanel>
 
             <Label Content="M:" Height="30" Canvas.Left="50" Canvas.Top="40" Width="30"/>
             <Label Content="P:" Height="30" Canvas.Left="50" Canvas.Top="70" Width="30"/>
@@ -42,8 +58,9 @@
             <TextBox x:Name="tb_Gamma" Height="16" Canvas.Left="100" Canvas.Top="198" Text="1.4" TextWrapping="Wrap" Width="80"/>
             <TextBox x:Name="tb_R" Height="16" Canvas.Left="100" Canvas.Top="226" Text="287" TextWrapping="Wrap" Width="80"/>
 
-            <Button x:Name="bt_Calculate" Content="Calculate" Height="21" Canvas.Left="101" Canvas.Top="280" Width="80" Click="bt_Calculate_Click"/>
-            
+            <Button x:Name="bt_Calculate" Content="Run Simulation" Height="21" Canvas.Left="50" Canvas.Top="280" Width="131" Click="bt_Calculate_Click"/>
+            <Button x:Name="bt_RestartSimulation" Content="Restart Simulation" Height="21" Canvas.Left="48" Canvas.Top="315" Width="132" Click="bt_RestartSimulation_Click"/>
+
             <Label Name="tb_M1" Content="M = " Height="30" Canvas.Left="931" Canvas.Top="40" Width="150"/>
             <Label Name="tb_P1" Content="P = " Height="30" Canvas.Left="931" Canvas.Top="70" Width="150"/>
             <Label Name="tb_rho1" Content="ρ = " Height="30" Canvas.Left="931" Canvas.Top="100" Width="150"/>
@@ -52,6 +69,10 @@
             <Label Name="tb_V1" Content="V = " Height="30" Canvas.Left="931" Canvas.Top="190" Width="150"/>
             <Label Name="tb_X1" Content="X = " Height="30" Canvas.Left="931" Canvas.Top="220" Width="150"/>
             <Label Name="tb_Y1" Content="Y = " Height="30" Canvas.Left="931" Canvas.Top="250" Width="150"/>
+            
+            
+            <WpfPlot Name="plot" Height="216" Canvas.Left="282" Canvas.Top="571" Width="600"/>
+
 
         </Canvas>
 

@@ -64,7 +64,7 @@ namespace LIBRERIA_CLASES
                 this.Matrix[i, j].ETA = this.Matrix[i - 1, j].ETA + deltaETA;
             }
 
-            // Calculamos h, ys, de cada posicion de cada celda de la columna
+            // Calculamos h, ys,dETA_X de cada posicion de cada celda de la columna
 
             for (int i = 0; i < rows; i++)
             {
@@ -82,7 +82,6 @@ namespace LIBRERIA_CLASES
                     this.Matrix[i, j].h = H + (x - E) * Math.Tan(theta);
                     this.Matrix[i, j].y_s = - (x - E) * Math.Tan(theta);
 
-                    //double ETA = (this.Matrix[i, j].y - this.Matrix[i, j].y_s) / this.Matrix[i, j].h;
                     this.Matrix[i, j].dETA_dX = (1 - this.Matrix[i,j].ETA) * Math.Tan(theta) / this.Matrix[i,j].h;
                 }
 
@@ -92,6 +91,8 @@ namespace LIBRERIA_CLASES
 
         public void RellenarColumnadeCeldas(int j, double Theta, double gamma, double R)
         {
+            // LA matriz de celdas se crea sin celdas por defecto. Hay que agregarlas "manualmente".
+
             for (int i = 0; i < rows; i++)
             {
                 this.Matrix[i, j] = new Celda(Theta, gamma, R);
@@ -100,6 +101,8 @@ namespace LIBRERIA_CLASES
 
         public double Compute_Assign_DeltaXI(int j)
         {
+            // Calculamos deltaXI y la asignamos a cada una de las deldas de una columna
+
             List<double> listaTanMax = new List<double>();
 
             for (int i = 0; i < rows; i++)
@@ -159,7 +162,7 @@ namespace LIBRERIA_CLASES
                         this.Matrix[i, j].deltaF1_deltaETA, this.Matrix[i, j].deltaF2_deltaETA, this.Matrix[i, j].deltaF3_deltaETA, this.Matrix[i, j].deltaF4_deltaETA, 
                         deltaXI);
                 }
-                else if(i+1 == rows)
+                else if(i+1 == rows) 
                 {
                     this.Matrix[i, j + 1].CalculatePredictedF_NextColumn_Boundary(
                         this.Matrix[i, j].F1, this.Matrix[i, j].F2, this.Matrix[i, j].F3, this.Matrix[i, j].F4, 
@@ -213,7 +216,7 @@ namespace LIBRERIA_CLASES
                     this.Matrix[i,j + 1].predicted_deltaF1_deltaETA, this.Matrix[i, j + 1].predicted_deltaF2_deltaETA, this.Matrix[i, j + 1].predicted_deltaF3_deltaETA, this.Matrix[i, j + 1].predicted_deltaF4_deltaETA);
             }
 
-            // Ahora calculamos las Fs (las de verdad) de cada celda de la columna siguiente
+            // Ahora calculamos las Fs (las de verdad, no las predecidas) de cada celda de la columna siguiente
             for(int i = 0; i< rows; i++)
             {
                 if(i == 0 || (i+1 == rows))
@@ -283,14 +286,14 @@ namespace LIBRERIA_CLASES
                 j++;
             }
 
-            for (int i = 0; i < rows; i++)
-            {
-                for (j = 0; j < columns; j++)
-                {
-                    Trace.Write(this.Matrix[i, j].dETA_dX + "\t");
-                }
-                Trace.Write("\n");
-            }
+            //for (int i = 0; i < rows; i++)
+            //{
+            //    for (j = 0; j < columns; j++)
+            //    {
+            //        Trace.Write(this.Matrix[i, j].dETA_dX + "\t");
+            //    }
+            //    Trace.Write("\n");
+            //}
         }
 
         public void CalculatePolygons()
@@ -301,7 +304,7 @@ namespace LIBRERIA_CLASES
                 x = this.Matrix[0, j].x;
                 for (int i = 0; i < rows - 1; i++)
                 {
-                    this.Matrix[i, j].CalculatePolygon(this.Matrix[i + 1, j].y);
+                    this.Matrix[i, j].CalculatePolygon(this.Matrix[i + 1, j].y, this.Matrix[i, j + 1].y);
                 }
             }
         }
