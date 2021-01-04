@@ -112,6 +112,18 @@ namespace LIBRERIA_CLASES
             this.deltaF3_deltaETA = dETA_dX * ((this.F3 - F3_arriba) / DeltaETA) + (1 / this.h) * ((this.G3 - G3_arriba) / DeltaETA);
             this.deltaF4_deltaETA = dETA_dX * ((this.F4 - F4_arriba) / DeltaETA) + (1 / this.h) * ((this.G4 - G4_arriba) / DeltaETA);
         }
+
+        public void CalculateDeltaF_DeltaETA_Boundary_Down(
+        double F1_arriba, double F2_arriba, double F3_arriba, double F4_arriba,
+        double G1_arriba, double G2_arriba, double G3_arriba, double G4_arriba,
+        double DeltaETA)
+        {
+            this.deltaF1_deltaETA = dETA_dX * ((this.F1 - F1_arriba) / DeltaETA) + (1 / this.h) * ((this.G1 - G1_arriba) / DeltaETA);
+            this.deltaF2_deltaETA = dETA_dX * ((this.F2 - F2_arriba) / DeltaETA) + (1 / this.h) * ((this.G2 - G2_arriba) / DeltaETA);
+            this.deltaF3_deltaETA = dETA_dX * ((this.F3 - F3_arriba) / DeltaETA) + (1 / this.h) * ((this.G3 - G3_arriba) / DeltaETA);
+            this.deltaF4_deltaETA = dETA_dX * ((this.F4 - F4_arriba) / DeltaETA) + (1 / this.h) * ((this.G4 - G4_arriba) / DeltaETA);
+        }
+
         public void CalculateDeltaF_DeltaETA_Boundary(
             double F1_abajo, double F2_abajo, double F3_abajo, double F4_abajo, 
             double G1_abajo, double G2_abajo, double G3_abajo, double G4_abajo, 
@@ -142,10 +154,10 @@ namespace LIBRERIA_CLASES
 
             }
 
-            this.predictedF1 = F1 + (dF1_dETA * deltaXI) /*+ SF1*/;
-            this.predictedF2 = F2 + (dF2_dETA * deltaXI) /*+ SF2*/;
-            this.predictedF3 = F3 + (dF3_dETA * deltaXI) /*+ SF3*/;
-            this.predictedF4 = F4 + (dF4_dETA * deltaXI) /*+ SF4*/;
+            this.predictedF1 = F1 + (dF1_dETA * deltaXI) + SF1;
+            this.predictedF2 = F2 + (dF2_dETA * deltaXI) + SF2;
+            this.predictedF3 = F3 + (dF3_dETA * deltaXI) + SF3;
+            this.predictedF4 = F4 + (dF4_dETA * deltaXI) + SF4;
         }
         public void CalculatePredictedF_NextColumn_Boundary(double F1, double F2, double F3, double F4, double dF1_dETA, double dF2_dETA, double dF3_dETA, double dF4_dETA, double deltaXI)
         {
@@ -215,10 +227,10 @@ namespace LIBRERIA_CLASES
             predictedSF3 = (Cy * Math.Abs(P_arriba - 2 * this.predictedP + P_abajo) / (P_arriba + 2 * this.predictedP + P_abajo)) * (F3_arriba - 2 * this.predictedF3 + F3_abajo);
             predictedSF4 = (Cy * Math.Abs(P_arriba - 2 * this.predictedP + P_abajo) / (P_arriba + 2 * this.predictedP + P_abajo)) * (F4_arriba - 2 * this.predictedF4 + F4_abajo);
 
-            this.F1 = F1_anterior + (dF1_dETA_anterior * DeltaXI) /*+ predictedSF1*/;
-            this.F2 = F2_anterior + (dF2_dETA_anterior * DeltaXI) /*+ predictedSF2*/;
-            this.F3 = F3_anterior + (dF3_dETA_anterior * DeltaXI) /*+ predictedSF3*/;
-            this.F4 = F4_anterior + (dF4_dETA_anterior * DeltaXI) /*+ predictedSF4*/;
+            this.F1 = F1_anterior + (dF1_dETA_anterior * DeltaXI) + predictedSF1;
+            this.F2 = F2_anterior + (dF2_dETA_anterior * DeltaXI) + predictedSF2;
+            this.F3 = F3_anterior + (dF3_dETA_anterior * DeltaXI) + predictedSF3;
+            this.F4 = F4_anterior + (dF4_dETA_anterior * DeltaXI) + predictedSF4;
         }
 
         public void CalculateParametersNextColumn()
@@ -253,15 +265,6 @@ namespace LIBRERIA_CLASES
             this.V = this.F3 / this.F1;
             double M_cal = Math.Sqrt(Math.Pow(this.U, 2) + Math.Pow(this.V, 2)) / Math.Sqrt(this.gamma * this.R * T_cal);
             double f_cal = Math.Sqrt((this.gamma + 1) / (this.gamma - 1)) * Math.Atan(Math.Sqrt(((this.gamma - 1) / (this.gamma + 1)) * (Math.Pow(M_cal, 2) - 1))) - Math.Atan(Math.Sqrt(Math.Pow(M_cal, 2) - 1));
-
-            if (this.x > E)
-            {
-                this.V = -(this.U * Math.Tan(Theta * Math.PI / 180));
-            }
-            else
-            {
-                this.V = 0;
-            }
 
             double fi;
 
@@ -330,6 +333,15 @@ namespace LIBRERIA_CLASES
             this.P = P_cal * Math.Pow(cnst, (this.gamma / (this.gamma - 1)));
             this.T = T_cal * cnst;
             this.rho = this.P / (this.T * this.R);
+
+            if (this.x > E)
+            {
+                this.V = -(this.U * Math.Tan(Theta * Math.PI / 180));
+            }
+            else
+            {
+                this.V = 0;
+            }
 
             this.F1 = this.rho * this.U;
             this.F2 = (this.rho * this.U * this.U) + this.P;

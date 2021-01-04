@@ -82,7 +82,8 @@ namespace LIBRERIA_CLASES
                     this.Matrix[i, j].h = H + (x - E) * Math.Tan(theta);
                     this.Matrix[i, j].y_s = - (x - E) * Math.Tan(theta);
 
-                    this.Matrix[i, j].dETA_dX = (1 - this.Matrix[i,j].ETA) * Math.Tan(theta) / this.Matrix[i,j].h;
+                    double ETA = (Matrix[i, j].y*0 - Matrix[i, j].y_s) / Matrix[i, j].h;
+                    this.Matrix[i, j].dETA_dX = (1 - ETA) * Math.Tan(theta) / this.Matrix[i,j].h;
                 }
 
                 this.Matrix[i, j].y = (this.Matrix[i, j].h * this.Matrix[i, j].ETA) + this.Matrix[i, j].y_s;
@@ -135,7 +136,15 @@ namespace LIBRERIA_CLASES
             // Calculamos deltaF / deltaETA para cada posición de la columna. Eq 8.36, pag 387
             for(int i = 0; i < rows; i++)
             {
-                if(i+1 < rows) // no estmaos en la foundary asi que hacemos forward difference
+                if (i == 0)
+                {
+                    this.Matrix[i, j].CalculateDeltaF_DeltaETA_Boundary_Down(
+                    this.Matrix[i + 1, j].F1, this.Matrix[i + 1, j].F2, this.Matrix[i + 1, j].F3, this.Matrix[i + 1, j].F4,
+                    this.Matrix[i + 1, j].G1, this.Matrix[i + 1, j].G2, this.Matrix[i + 1, j].G3, this.Matrix[i + 1, j].G4,
+                    deltaETA);
+                }
+
+                else if(i+1 < rows) // no estmaos en la foundary asi que hacemos forward difference
                 {
                     this.Matrix[i, j].CalculateDeltaF_DeltaETA(
                         this.Matrix[i + 1, j].F1, this.Matrix[i + 1, j].F2, this.Matrix[i + 1, j].F3, this.Matrix[i + 1, j].F4, 
@@ -263,6 +272,11 @@ namespace LIBRERIA_CLASES
             int j = 0;
             while ((j + 1) < columns)
             {
+                if(j==14)
+                {
+
+                }
+
                 // Cremos las celdas de la nueva columna
                 this.RellenarColumnadeCeldas(j + 1, Theta, gamma, R);
                 this.Calculate_ParametrosCambioVariable(E, H, Theta, j);
@@ -272,7 +286,7 @@ namespace LIBRERIA_CLASES
                 double deltaXI = this.Compute_Assign_DeltaXI(j);
 
                 // Calculamos deltaETA / deltaX
-                this.CalculateDeltaETA_DeltaX(j);
+                //this.CalculateDeltaETA_DeltaX(j);
 
                 // Calculamos el Predictor Step:
                 this.CalculatePredictorStep(j, deltaXI);
@@ -286,14 +300,14 @@ namespace LIBRERIA_CLASES
                 j++;
             }
 
-            //for (int i = 0; i < rows; i++)
-            //{
-            //    for (j = 0; j < columns; j++)
-            //    {
-            //        Trace.Write(this.Matrix[i, j].predictedSF4 + "\t");
-            //    }
-            //    Trace.Write("\n");
-            //}
+            for (int i = 0; i < rows; i++)
+            {
+                for (j = 0; j < columns; j++)
+                {
+                    Trace.Write(this.Matrix[i, j].M + "\t");
+                }
+                Trace.Write("\n");
+            }
         }
 
         public void CalculatePolygons()
