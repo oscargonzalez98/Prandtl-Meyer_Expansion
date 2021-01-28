@@ -300,14 +300,14 @@ namespace LIBRERIA_CLASES
                 j++;
             }
 
-            for (int i = 0; i < rows; i++)
-            {
-                for (j = 0; j < columns; j++)
-                {
-                    Trace.Write(this.Matrix[i, j].M + "\t");
-                }
-                Trace.Write("\n");
-            }
+            //for (int i = 0; i < rows; i++)
+            //{
+            //    for (j = 0; j < columns; j++)
+            //    {
+            //        Trace.Write(this.Matrix[i, j].M + "\t");
+            //    }
+            //    Trace.Write("\n");
+            //}
         }
 
         public void CalculatePolygons()

@@ -58,8 +58,8 @@
             <TextBox x:Name="tb_Gamma" Height="16" Canvas.Left="100" Canvas.Top="198" Text="1.4" TextWrapping="Wrap" Width="80"/>
             <TextBox x:Name="tb_R" Height="16" Canvas.Left="100" Canvas.Top="226" Text="287" TextWrapping="Wrap" Width="80"/>
 
-            <Button x:Name="bt_Calculate" Content="Run Simulation" Height="21" Canvas.Left="50" Canvas.Top="280" Width="131" Click="bt_Calculate_Click"/>
-            <Button x:Name="bt_RestartSimulation" Content="Restart Simulation" Height="21" Canvas.Left="48" Canvas.Top="315" Width="132" Click="bt_RestartSimulation_Click"/>
+            <Button x:Name="bt_Calculate" Content="Run Simulation" Height="21" Canvas.Left="50" Canvas.Top="301" Width="131" Click="bt_Calculate_Click"/>
+            <Button x:Name="bt_RestartSimulation" Content="Restart Simulation" Height="21" Canvas.Left="48" Canvas.Top="338" Width="132" Click="bt_RestartSimulation_Click"/>
 
             <Label Name="tb_M1" Content="M = " Height="30" Canvas.Left="931" Canvas.Top="40" Width="150"/>
             <Label Name="tb_P1" Content="P = " Height="30" Canvas.Left="931" Canvas.Top="70" Width="150"/>
@@ -69,9 +69,10 @@
             <Label Name="tb_V1" Content="V = " Height="30" Canvas.Left="931" Canvas.Top="190" Width="150"/>
             <Label Name="tb_X1" Content="X = " Height="30" Canvas.Left="931" Canvas.Top="220" Width="150"/>
             <Label Name="tb_Y1" Content="Y = " Height="30" Canvas.Left="931" Canvas.Top="250" Width="150"/>
-            
-            
+
+
             <WpfPlot Name="plot" Height="216" Canvas.Left="282" Canvas.Top="571" Width="600"/>
+            <Button x:Name="bt_AndersonValues" Content="Set Standard Values" Height="21" Canvas.Left="50" Canvas.Top="265" Width="131" Click="bt_AndersonValues_Click"/>
 
 
         </Canvas>

@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Spreadsheet;
 using LIBRERIA_CLASES;
+using ServiceStack.FluentValidation.Resources;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -44,6 +45,8 @@ namespace WPF_APP
 
         private void bt_M_Click(object sender, RoutedEventArgs e)
         {
+            image.Source = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\img\captura_M.png", UriKind.Absolute));
+
             int rows = matrix.Matrix.GetLength(0);
             int columns = matrix.Matrix.GetLength(1);
 
@@ -80,6 +83,8 @@ namespace WPF_APP
 
         private void bt_P_Click(object sender, RoutedEventArgs e)
         {
+            image.Source = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\img\captura_P.png", UriKind.Absolute));
+
             int rows = matrix.Matrix.GetLength(0);
             int columns = matrix.Matrix.GetLength(1);
 
@@ -116,6 +121,8 @@ namespace WPF_APP
 
         private void bt_Rho_Click(object sender, RoutedEventArgs e)
         {
+            image.Source = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\img\captura_RHO.png", UriKind.Absolute));
+
             int rows = matrix.Matrix.GetLength(0);
             int columns = matrix.Matrix.GetLength(1);
 
@@ -152,6 +159,8 @@ namespace WPF_APP
 
         private void bt_T_Click(object sender, RoutedEventArgs e)
         {
+            image.Source = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\img\captura_T.png", UriKind.Absolute));
+
             int rows = matrix.Matrix.GetLength(0);
             int columns = matrix.Matrix.GetLength(1);
 
@@ -188,6 +197,8 @@ namespace WPF_APP
 
         private void bt_U_Click(object sender, RoutedEventArgs e)
         {
+            image.Source = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\img\captura_U.png", UriKind.Absolute));
+
             int rows = matrix.Matrix.GetLength(0);
             int columns = matrix.Matrix.GetLength(1);
 
@@ -224,6 +235,8 @@ namespace WPF_APP
 
         private void bt_V_Click(object sender, RoutedEventArgs e)
         {
+            image.Source = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\img\captura_V.png", UriKind.Absolute));
+
             int rows = matrix.Matrix.GetLength(0);
             int columns = matrix.Matrix.GetLength(1);
 

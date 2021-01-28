@@ -30,7 +30,9 @@
             <Button Name="bt_V" Content="V (m / s)" Width="100" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent" Click="bt_V_Click"/>
         </StackPanel>
 
-        <DataGrid Name="datagrid" HorizontalAlignment="Left" Height="520" Margin="293,0,0,0" VerticalAlignment="Center" Width="1014"/>
+        <DataGrid Name="datagrid" HorizontalAlignment="Left" Height="668" Margin="276,173,0,0" VerticalAlignment="Top" Width="886"/>
+        
+        <Image Name="image" HorizontalAlignment="Left" Height="664" Margin="1186,173,0,0" VerticalAlignment="Top" Width="173"/>
 
     </Grid>
 </Window>

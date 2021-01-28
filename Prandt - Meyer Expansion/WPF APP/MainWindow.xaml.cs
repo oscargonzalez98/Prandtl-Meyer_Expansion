@@ -45,34 +45,41 @@ namespace WPF_APP
 
         private void bt_Calculate_Click(object sender, RoutedEventArgs e)
         {
-            canvas.Children.Clear();
-
-            double M1 = Convert.ToDouble(tb_M.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
-            double P1 = Convert.ToDouble(tb_P.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
-            double rho1 = Convert.ToDouble(tb_rho.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
-            double T1 = Convert.ToDouble(tb_T.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
-            double theta = Convert.ToDouble(tb_theta.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
-            double gamma = Convert.ToDouble(tb_Gamma.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
-            double R = Convert.ToDouble(tb_R.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
-
-            matrix = new Matriz(rows, columns);
-            double U1 = M1 * Math.Sqrt(R * gamma * T1);
-            matrix.SetInitialConditions(M1, U1, 0, P1, rho1, T1, theta, gamma, R);
-            matrix.CalculateSteps(theta, gamma, R);
-
-            matrix.CalculatePolygons();
-
-            double x = 0;
-            for (int j = 0; j < columns && x < L; j++)
+            try
             {
-                x = matrix.Matrix[0, j].x;
-                for (int i = 0; i < rows - 1; i++)
-                {
-                    canvas.Children.Add(matrix.Matrix[i, j].poligono);
+                canvas.Children.Clear();
 
-                    // añadimos la cela a una lista.
-                    listPolygons.Add(matrix.Matrix[i, j]);
+                double M1 = Convert.ToDouble(tb_M.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
+                double P1 = Convert.ToDouble(tb_P.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
+                double rho1 = Convert.ToDouble(tb_rho.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
+                double T1 = Convert.ToDouble(tb_T.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
+                double theta = Convert.ToDouble(tb_theta.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
+                double gamma = Convert.ToDouble(tb_Gamma.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
+                double R = Convert.ToDouble(tb_R.Text.Replace(Convert.ToChar("."), Convert.ToChar(",")));
+
+                matrix = new Matriz(rows, columns);
+                double U1 = M1 * Math.Sqrt(R * gamma * T1);
+                matrix.SetInitialConditions(M1, U1, 0, P1, rho1, T1, theta, gamma, R);
+                matrix.CalculateSteps(theta, gamma, R);
+
+                matrix.CalculatePolygons();
+
+                double x = 0;
+                for (int j = 0; j < columns && x < L; j++)
+                {
+                    x = matrix.Matrix[0, j].x;
+                    for (int i = 0; i < rows - 1; i++)
+                    {
+                        canvas.Children.Add(matrix.Matrix[i, j].poligono);
+
+                        // añadimos la cela a una lista.
+                        listPolygons.Add(matrix.Matrix[i, j]);
+                    }
                 }
+            }
+            catch
+            {
+                MessageBox.Show("Pleae insert valid / reasonable values.");
             }
         }
 
@@ -102,436 +109,490 @@ namespace WPF_APP
 
         private void bt_M_Click(object sender, RoutedEventArgs e)
         {
-            canvas.Children.Clear();
-
-            // Buscamos valor maximo y minimo
-            double max_M = listPolygons.Max(r => r.M);
-            double min_M = listPolygons.Min(r => r.M);
-
-            //double blanco = Convert.ToDouble(Convert.ToInt32("ffffff", 16));
-            double blanco = Convert.ToDouble(Convert.ToInt32("ffffff", 16));
-            double rojo = Convert.ToDouble(Convert.ToInt32("ff0000", 16));
-
-            double m = (rojo - blanco) / (max_M - min_M);
-            double n = blanco - m * min_M;
-
-            // Recorremos todos los polígonos
-
-            double x = 0;
-            for (int j = 0; j < columns && x < L; j++)
+            try
             {
-                x = matrix.Matrix[0, j].x;
-                for (int i = 0; i < rows - 1; i++)
+                canvas.Children.Clear();
+
+                // Buscamos valor maximo y minimo
+                double max_M = listPolygons.Max(r => r.M);
+                double min_M = listPolygons.Min(r => r.M);
+
+                //double blanco = Convert.ToDouble(Convert.ToInt32("ffffff", 16));
+                double blanco = Convert.ToDouble(Convert.ToInt32("ffffff", 16));
+                double rojo = Convert.ToDouble(Convert.ToInt32("ff0000", 16));
+
+                double m = (rojo - blanco) / (max_M - min_M);
+                double n = blanco - m * min_M;
+
+                // Recorremos todos los polígonos
+
+                double x = 0;
+                for (int j = 0; j < columns && x < L; j++)
                 {
-                    // Ahora calculamos su color
-                    double opacity = (matrix.Matrix[i, j].M - min_M) / max_M;
+                    x = matrix.Matrix[0, j].x;
+                    for (int i = 0; i < rows - 1; i++)
+                    {
+                        // Ahora calculamos su color
+                        double opacity = (matrix.Matrix[i, j].M - min_M) / max_M;
 
-                    matrix.Matrix[i, j].poligono.Stroke = Brushes.LightGray;
-                    matrix.Matrix[i, j].poligono.StrokeThickness = 1;
+                        matrix.Matrix[i, j].poligono.Stroke = Brushes.LightGray;
+                        matrix.Matrix[i, j].poligono.StrokeThickness = 1;
 
-                    int color = Convert.ToInt32(Math.Floor(m * matrix.Matrix[i, j].M + n));
-                    string color_hex = String.Concat("#", color.ToString("X"));
-                    SolidColorBrush brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color_hex));
-                    matrix.Matrix[i, j].poligono.Fill = brush;
+                        int color = Convert.ToInt32(Math.Floor(m * matrix.Matrix[i, j].M + n));
+                        string color_hex = String.Concat("#", color.ToString("X"));
+                        SolidColorBrush brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color_hex));
+                        matrix.Matrix[i, j].poligono.Fill = brush;
 
-                    // añadimos los polígonos al canvas
-                    canvas.Children.Add(matrix.Matrix[i, j].poligono);
+                        // añadimos los polígonos al canvas
+                        canvas.Children.Add(matrix.Matrix[i, j].poligono);
 
-                    // Añadimos eventos para poder ver el valor de las variables de este poligono/celfda si pasamos el mouse por encima
-                    matrix.Matrix[i, j].poligono.MouseEnter += Polygon_MouseEnter;
-                    matrix.Matrix[i, j].poligono.MouseLeave += Polygon_MouseLeave;
+                        // Añadimos eventos para poder ver el valor de las variables de este poligono/celfda si pasamos el mouse por encima
+                        matrix.Matrix[i, j].poligono.MouseEnter += Polygon_MouseEnter;
+                        matrix.Matrix[i, j].poligono.MouseLeave += Polygon_MouseLeave;
+                    }
                 }
+
+                // Actualizamos la gráficoa para esta magnitud
+
+                List<double> axisX = new List<double>();
+                List<double> axisY1 = new List<double>();
+                List<double> axisY2 = new List<double>();
+
+                x = 0;
+                for (int j = 0; j < columns && x < L; j++)
+                {
+                    List<double> listaAverage1 = new List<double>();
+
+                    x = matrix.Matrix[0, j].x;
+                    for (int i = 0; i < rows - 1; i++)
+                    {
+                        listaAverage1.Add(matrix.Matrix[i, j].M);
+                    }
+                    axisY2.Add(matrix.Matrix[0, j].M);
+                    axisX.Add(x);
+                    axisY1.Add(listaAverage1.Average());
+                }
+
+                var X = axisX.ToArray();
+                var Y1 = axisY1.ToArray();
+                var Y2 = axisY2.ToArray();
+
+                plot.plt.Clear();
+                plot.plt.PlotScatter(X, Y1, markerSize: 0, lineWidth: 3, label: "Average");
+                plot.plt.PlotScatter(X, Y2, markerSize: 0, lineWidth: 3, label: "Boundary");
+                plot.plt.XLabel("X [m]");
+                plot.plt.YLabel("Mach Number [-]");
+                plot.plt.Legend();
             }
-
-            // Actualizamos la gráficoa para esta magnitud
-
-            List<double> axisX = new List<double>();
-            List<double> axisY1 = new List<double>();
-            List<double> axisY2 = new List<double>();
-
-            x = 0;
-            for (int j = 0; j < columns && x < L; j++)
+            catch
             {
-                List<double> listaAverage1 = new List<double>();
-
-                x = matrix.Matrix[0, j].x;
-                for (int i = 0; i < rows - 1; i++)
-                {
-                    listaAverage1.Add(matrix.Matrix[i, j].M);
-                }
-                axisY2.Add(matrix.Matrix[0, j].M);
-                axisX.Add(x);
-                axisY1.Add(listaAverage1.Average());
+                MessageBox.Show("Pleae insert valid / reasonable values.");
             }
-
-            var X = axisX.ToArray();
-            var Y1 = axisY1.ToArray();
-            var Y2 = axisY2.ToArray();
-
-            plot.plt.Clear();
-            plot.plt.PlotScatter(X, Y1, markerSize:0, lineWidth: 3, label: "Average");
-            plot.plt.PlotScatter(X, Y2, markerSize:0, lineWidth: 3, label: "Boundary");
-            plot.plt.Legend();
         }
 
         private void bt_P_Click(object sender, RoutedEventArgs e)
         {
-            canvas.Children.Clear();
-
-            // Buscamos valor maximo y minimo
-            double max_M = listPolygons.Max(r => r.P);
-            double min_M = listPolygons.Min(r => r.P);
-
-            //double blanco = Convert.ToDouble(Convert.ToInt32("ffffff", 16));
-            double blanco = Convert.ToDouble(Convert.ToInt32("ffffff", 16));
-            double rojo = Convert.ToDouble(Convert.ToInt32("ff0000", 16));
-
-            double m = (rojo - blanco) / (max_M - min_M);
-            double n = blanco - m * min_M;
-
-            // Recorremos todos los polígonos
-
-            double x = 0;
-            for (int j = 0; j < columns && x < L; j++)
+            try
             {
-                x = matrix.Matrix[0, j].x;
-                for (int i = 0; i < rows - 1; i++)
+                canvas.Children.Clear();
+
+                // Buscamos valor maximo y minimo
+                double max_M = listPolygons.Max(r => r.P);
+                double min_M = listPolygons.Min(r => r.P);
+
+                //double blanco = Convert.ToDouble(Convert.ToInt32("ffffff", 16));
+                double blanco = Convert.ToDouble(Convert.ToInt32("ffffff", 16));
+                double rojo = Convert.ToDouble(Convert.ToInt32("ff0000", 16));
+
+                double m = (rojo - blanco) / (max_M - min_M);
+                double n = blanco - m * min_M;
+
+                // Recorremos todos los polígonos
+
+                double x = 0;
+                for (int j = 0; j < columns && x < L; j++)
                 {
-                    // Ahora calculamos su color
-                    double opacity = (matrix.Matrix[i, j].P - min_M) / max_M;
+                    x = matrix.Matrix[0, j].x;
+                    for (int i = 0; i < rows - 1; i++)
+                    {
+                        // Ahora calculamos su color
+                        double opacity = (matrix.Matrix[i, j].P - min_M) / max_M;
 
-                    matrix.Matrix[i, j].poligono.Stroke = Brushes.LightGray;
-                    matrix.Matrix[i, j].poligono.StrokeThickness = 1;
+                        matrix.Matrix[i, j].poligono.Stroke = Brushes.LightGray;
+                        matrix.Matrix[i, j].poligono.StrokeThickness = 1;
 
-                    int color = Convert.ToInt32(Math.Floor(m * matrix.Matrix[i, j].P + n));
-                    string color_hex = String.Concat("#", color.ToString("X"));
-                    SolidColorBrush brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color_hex));
-                    matrix.Matrix[i, j].poligono.Fill = brush;
+                        int color = Convert.ToInt32(Math.Floor(m * matrix.Matrix[i, j].P + n));
+                        string color_hex = String.Concat("#", color.ToString("X"));
+                        SolidColorBrush brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color_hex));
+                        matrix.Matrix[i, j].poligono.Fill = brush;
 
-                    // añadimos los polígonos al canvas
-                    canvas.Children.Add(matrix.Matrix[i, j].poligono);
+                        // añadimos los polígonos al canvas
+                        canvas.Children.Add(matrix.Matrix[i, j].poligono);
 
-                    // Añadimos eventos para poder ver el valor de las variables de este poligono/celfda si pasamos el mouse por encima
-                    matrix.Matrix[i, j].poligono.MouseEnter += Polygon_MouseEnter;
-                    matrix.Matrix[i, j].poligono.MouseLeave += Polygon_MouseLeave;
+                        // Añadimos eventos para poder ver el valor de las variables de este poligono/celfda si pasamos el mouse por encima
+                        matrix.Matrix[i, j].poligono.MouseEnter += Polygon_MouseEnter;
+                        matrix.Matrix[i, j].poligono.MouseLeave += Polygon_MouseLeave;
+                    }
                 }
+
+                List<double> axisX = new List<double>();
+                List<double> axisY1 = new List<double>();
+                List<double> axisY2 = new List<double>();
+
+                x = 0;
+                for (int j = 0; j < columns && x < L; j++)
+                {
+                    List<double> listaAverage1 = new List<double>();
+
+                    x = matrix.Matrix[0, j].x;
+                    for (int i = 0; i < rows - 1; i++)
+                    {
+                        listaAverage1.Add(matrix.Matrix[i, j].P);
+                    }
+                    axisY2.Add(matrix.Matrix[0, j].P);
+                    axisX.Add(x);
+                    axisY1.Add(listaAverage1.Average());
+                }
+
+                var X = axisX.ToArray();
+                var Y1 = axisY1.ToArray();
+                var Y2 = axisY2.ToArray();
+
+                plot.plt.Clear();
+                plot.plt.PlotScatter(X, Y1, markerSize: 0, lineWidth: 3, label: "Average");
+                plot.plt.PlotScatter(X, Y2, markerSize: 0, lineWidth: 3, label: "Boundary");
+                plot.plt.XLabel("X [m]");
+                plot.plt.YLabel("Pressure [Pa]");
+                plot.plt.Legend();
             }
-
-            List<double> axisX = new List<double>();
-            List<double> axisY1 = new List<double>();
-            List<double> axisY2 = new List<double>();
-
-            x = 0;
-            for (int j = 0; j < columns && x < L; j++)
+            catch
             {
-                List<double> listaAverage1 = new List<double>();
-
-                x = matrix.Matrix[0, j].x;
-                for (int i = 0; i < rows - 1; i++)
-                {
-                    listaAverage1.Add(matrix.Matrix[i, j].P);
-                }
-                axisY2.Add(matrix.Matrix[0, j].P);
-                axisX.Add(x);
-                axisY1.Add(listaAverage1.Average());
+                MessageBox.Show("Pleae insert valid / reasonable values.");
             }
-
-            var X = axisX.ToArray();
-            var Y1 = axisY1.ToArray();
-            var Y2 = axisY2.ToArray();
-
-            plot.plt.Clear();
-            plot.plt.PlotScatter(X, Y1, markerSize: 0, lineWidth: 3, label: "Average");
-            plot.plt.PlotScatter(X, Y2, markerSize: 0, lineWidth: 3, label: "Boundary");
-            plot.plt.Legend();
         }
 
         private void bt_Rho_Click(object sender, RoutedEventArgs e)
         {
-            canvas.Children.Clear();
-
-            // Buscamos valor maximo y minimo
-            double max_M = listPolygons.Max(r => r.rho);
-            double min_M = listPolygons.Min(r => r.rho);
-
-            //double blanco = Convert.ToDouble(Convert.ToInt32("ffffff", 16));
-            double blanco = Convert.ToDouble(Convert.ToInt32("ffffff", 16));
-            double rojo = Convert.ToDouble(Convert.ToInt32("ff0000", 16));
-
-            double m = (rojo - blanco) / (max_M - min_M);
-            double n = blanco - m * min_M;
-
-            // Recorremos todos los polígonos
-
-            double x = 0;
-            for (int j = 0; j < columns && x < L; j++)
+            try
             {
-                x = matrix.Matrix[0, j].x;
-                for (int i = 0; i < rows - 1; i++)
+                canvas.Children.Clear();
+
+                // Buscamos valor maximo y minimo
+                double max_M = listPolygons.Max(r => r.rho);
+                double min_M = listPolygons.Min(r => r.rho);
+
+                //double blanco = Convert.ToDouble(Convert.ToInt32("ffffff", 16));
+                double blanco = Convert.ToDouble(Convert.ToInt32("ffffff", 16));
+                double rojo = Convert.ToDouble(Convert.ToInt32("ff0000", 16));
+
+                double m = (rojo - blanco) / (max_M - min_M);
+                double n = blanco - m * min_M;
+
+                // Recorremos todos los polígonos
+
+                double x = 0;
+                for (int j = 0; j < columns && x < L; j++)
                 {
-                    // Ahora calculamos su color
-                    double opacity = (matrix.Matrix[i, j].rho - min_M) / max_M;
+                    x = matrix.Matrix[0, j].x;
+                    for (int i = 0; i < rows - 1; i++)
+                    {
+                        // Ahora calculamos su color
+                        double opacity = (matrix.Matrix[i, j].rho - min_M) / max_M;
 
-                    matrix.Matrix[i, j].poligono.Stroke = Brushes.LightGray;
-                    matrix.Matrix[i, j].poligono.StrokeThickness = 1;
+                        matrix.Matrix[i, j].poligono.Stroke = Brushes.LightGray;
+                        matrix.Matrix[i, j].poligono.StrokeThickness = 1;
 
-                    int color = Convert.ToInt32(Math.Floor(m * matrix.Matrix[i, j].rho + n));
-                    string color_hex = String.Concat("#", color.ToString("X"));
-                    SolidColorBrush brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color_hex));
-                    matrix.Matrix[i, j].poligono.Fill = brush;
+                        int color = Convert.ToInt32(Math.Floor(m * matrix.Matrix[i, j].rho + n));
+                        string color_hex = String.Concat("#", color.ToString("X"));
+                        SolidColorBrush brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color_hex));
+                        matrix.Matrix[i, j].poligono.Fill = brush;
 
-                    // añadimos los polígonos al canvas
-                    canvas.Children.Add(matrix.Matrix[i, j].poligono);
+                        // añadimos los polígonos al canvas
+                        canvas.Children.Add(matrix.Matrix[i, j].poligono);
 
-                    // Añadimos eventos para poder ver el valor de las variables de este poligono/celfda si pasamos el mouse por encima
-                    matrix.Matrix[i, j].poligono.MouseEnter += Polygon_MouseEnter;
-                    matrix.Matrix[i, j].poligono.MouseLeave += Polygon_MouseLeave;
+                        // Añadimos eventos para poder ver el valor de las variables de este poligono/celfda si pasamos el mouse por encima
+                        matrix.Matrix[i, j].poligono.MouseEnter += Polygon_MouseEnter;
+                        matrix.Matrix[i, j].poligono.MouseLeave += Polygon_MouseLeave;
+                    }
                 }
+
+                List<double> axisX = new List<double>();
+                List<double> axisY1 = new List<double>();
+                List<double> axisY2 = new List<double>();
+
+                x = 0;
+                for (int j = 0; j < columns && x < L; j++)
+                {
+                    List<double> listaAverage1 = new List<double>();
+
+                    x = matrix.Matrix[0, j].x;
+                    for (int i = 0; i < rows - 1; i++)
+                    {
+                        listaAverage1.Add(matrix.Matrix[i, j].rho);
+                    }
+                    axisY2.Add(matrix.Matrix[0, j].rho);
+                    axisX.Add(x);
+                    axisY1.Add(listaAverage1.Average());
+                }
+
+                var X = axisX.ToArray();
+                var Y1 = axisY1.ToArray();
+                var Y2 = axisY2.ToArray();
+
+                plot.plt.Clear();
+                plot.plt.PlotScatter(X, Y1, markerSize: 0, lineWidth: 3, label: "Average");
+                plot.plt.PlotScatter(X, Y2, markerSize: 0, lineWidth: 3, label: "Boundary");
+                plot.plt.XLabel("X [m]");
+                plot.plt.YLabel("Density [Kg / m^3]");
+                plot.plt.Legend();
             }
-
-            List<double> axisX = new List<double>();
-            List<double> axisY1 = new List<double>();
-            List<double> axisY2 = new List<double>();
-
-            x = 0;
-            for (int j = 0; j < columns && x < L; j++)
+            catch
             {
-                List<double> listaAverage1 = new List<double>();
-
-                x = matrix.Matrix[0, j].x;
-                for (int i = 0; i < rows - 1; i++)
-                {
-                    listaAverage1.Add(matrix.Matrix[i, j].rho);
-                }
-                axisY2.Add(matrix.Matrix[0, j].rho);
-                axisX.Add(x);
-                axisY1.Add(listaAverage1.Average());
+                MessageBox.Show("Pleae insert valid / reasonable values.");
             }
-
-            var X = axisX.ToArray();
-            var Y1 = axisY1.ToArray();
-            var Y2 = axisY2.ToArray();
-
-            plot.plt.Clear();
-            plot.plt.PlotScatter(X, Y1, markerSize: 0, lineWidth: 3, label: "Average");
-            plot.plt.PlotScatter(X, Y2, markerSize: 0, lineWidth: 3, label: "Boundary");
-            plot.plt.Legend();
         }
 
         private void bt_T_Click(object sender, RoutedEventArgs e)
         {
-            canvas.Children.Clear();
-
-            // Buscamos valor maximo y minimo
-            double max_M = listPolygons.Max(r => r.T);
-            double min_M = listPolygons.Min(r => r.T);
-
-            //double blanco = Convert.ToDouble(Convert.ToInt32("ffffff", 16));
-            double blanco = Convert.ToDouble(Convert.ToInt32("ffffff", 16));
-            double rojo = Convert.ToDouble(Convert.ToInt32("ff0000", 16));
-
-            double m = (rojo - blanco) / (max_M - min_M);
-            double n = blanco - m * min_M;
-
-            // Recorremos todos los polígonos
-
-            double x = 0;
-            for (int j = 0; j < columns && x < L; j++)
+            try
             {
-                x = matrix.Matrix[0, j].x;
-                for (int i = 0; i < rows - 1; i++)
+                canvas.Children.Clear();
+
+                // Buscamos valor maximo y minimo
+                double max_M = listPolygons.Max(r => r.T);
+                double min_M = listPolygons.Min(r => r.T);
+
+                //double blanco = Convert.ToDouble(Convert.ToInt32("ffffff", 16));
+                double blanco = Convert.ToDouble(Convert.ToInt32("ffffff", 16));
+                double rojo = Convert.ToDouble(Convert.ToInt32("ff0000", 16));
+
+                double m = (rojo - blanco) / (max_M - min_M);
+                double n = blanco - m * min_M;
+
+                // Recorremos todos los polígonos
+
+                double x = 0;
+                for (int j = 0; j < columns && x < L; j++)
                 {
-                    // Ahora calculamos su color
-                    double opacity = (matrix.Matrix[i, j].T - min_M) / max_M;
+                    x = matrix.Matrix[0, j].x;
+                    for (int i = 0; i < rows - 1; i++)
+                    {
+                        // Ahora calculamos su color
+                        double opacity = (matrix.Matrix[i, j].T - min_M) / max_M;
 
-                    matrix.Matrix[i, j].poligono.Stroke = Brushes.LightGray;
-                    matrix.Matrix[i, j].poligono.StrokeThickness = 1;
+                        matrix.Matrix[i, j].poligono.Stroke = Brushes.LightGray;
+                        matrix.Matrix[i, j].poligono.StrokeThickness = 1;
 
-                    int color = Convert.ToInt32(Math.Floor(m * matrix.Matrix[i, j].T + n));
-                    string color_hex = String.Concat("#", color.ToString("X"));
-                    SolidColorBrush brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color_hex));
-                    matrix.Matrix[i, j].poligono.Fill = brush;
+                        int color = Convert.ToInt32(Math.Floor(m * matrix.Matrix[i, j].T + n));
+                        string color_hex = String.Concat("#", color.ToString("X"));
+                        SolidColorBrush brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color_hex));
+                        matrix.Matrix[i, j].poligono.Fill = brush;
 
-                    // añadimos los polígonos al canvas
-                    canvas.Children.Add(matrix.Matrix[i, j].poligono);
+                        // añadimos los polígonos al canvas
+                        canvas.Children.Add(matrix.Matrix[i, j].poligono);
 
-                    // Añadimos eventos para poder ver el valor de las variables de este poligono/celfda si pasamos el mouse por encima
-                    matrix.Matrix[i, j].poligono.MouseEnter += Polygon_MouseEnter;
-                    matrix.Matrix[i, j].poligono.MouseLeave += Polygon_MouseLeave;
+                        // Añadimos eventos para poder ver el valor de las variables de este poligono/celfda si pasamos el mouse por encima
+                        matrix.Matrix[i, j].poligono.MouseEnter += Polygon_MouseEnter;
+                        matrix.Matrix[i, j].poligono.MouseLeave += Polygon_MouseLeave;
+                    }
                 }
+
+                List<double> axisX = new List<double>();
+                List<double> axisY1 = new List<double>();
+                List<double> axisY2 = new List<double>();
+
+                x = 0;
+                for (int j = 0; j < columns && x < L; j++)
+                {
+                    List<double> listaAverage1 = new List<double>();
+
+                    x = matrix.Matrix[0, j].x;
+                    for (int i = 0; i < rows - 1; i++)
+                    {
+                        listaAverage1.Add(matrix.Matrix[i, j].T);
+                    }
+                    axisY2.Add(matrix.Matrix[0, j].T);
+                    axisX.Add(x);
+                    axisY1.Add(listaAverage1.Average());
+                }
+
+                var X = axisX.ToArray();
+                var Y1 = axisY1.ToArray();
+                var Y2 = axisY2.ToArray();
+
+                plot.plt.Clear();
+                plot.plt.PlotScatter(X, Y1, markerSize: 0, lineWidth: 3, label: "Average");
+                plot.plt.PlotScatter(X, Y2, markerSize: 0, lineWidth: 3, label: "Boundary");
+                plot.plt.XLabel("X [m]");
+                plot.plt.YLabel("Temperature [T]");
+                plot.plt.Legend();
             }
-
-            List<double> axisX = new List<double>();
-            List<double> axisY1 = new List<double>();
-            List<double> axisY2 = new List<double>();
-
-            x = 0;
-            for (int j = 0; j < columns && x < L; j++)
+            catch
             {
-                List<double> listaAverage1 = new List<double>();
-
-                x = matrix.Matrix[0, j].x;
-                for (int i = 0; i < rows - 1; i++)
-                {
-                    listaAverage1.Add(matrix.Matrix[i, j].T);
-                }
-                axisY2.Add(matrix.Matrix[0, j].T);
-                axisX.Add(x);
-                axisY1.Add(listaAverage1.Average());
+                MessageBox.Show("Pleae insert valid / reasonable values.");
             }
-
-            var X = axisX.ToArray();
-            var Y1 = axisY1.ToArray();
-            var Y2 = axisY2.ToArray();
-
-            plot.plt.Clear();
-            plot.plt.PlotScatter(X, Y1, markerSize: 0, lineWidth: 3, label: "Average");
-            plot.plt.PlotScatter(X, Y2, markerSize: 0, lineWidth: 3, label: "Boundary");
-            plot.plt.Legend();
         }
 
         private void bt_U_Click(object sender, RoutedEventArgs e)
         {
-            canvas.Children.Clear();
-
-            // Buscamos valor maximo y minimo
-            double max_M = listPolygons.Max(r => r.U);
-            double min_M = listPolygons.Min(r => r.U);
-
-            //double blanco = Convert.ToDouble(Convert.ToInt32("ffffff", 16));
-            double blanco = Convert.ToDouble(Convert.ToInt32("ffffff", 16));
-            double rojo = Convert.ToDouble(Convert.ToInt32("ff0000", 16));
-
-            double m = (rojo - blanco) / (max_M - min_M);
-            double n = blanco - m * min_M;
-
-            // Recorremos todos los polígonos
-
-            double x = 0;
-            for (int j = 0; j < columns && x < L; j++)
+            try
             {
-                x = matrix.Matrix[0, j].x;
-                for (int i = 0; i < rows - 1; i++)
+                canvas.Children.Clear();
+
+                // Buscamos valor maximo y minimo
+                double max_M = listPolygons.Max(r => r.U);
+                double min_M = listPolygons.Min(r => r.U);
+
+                //double blanco = Convert.ToDouble(Convert.ToInt32("ffffff", 16));
+                double blanco = Convert.ToDouble(Convert.ToInt32("ffffff", 16));
+                double rojo = Convert.ToDouble(Convert.ToInt32("ff0000", 16));
+
+                double m = (rojo - blanco) / (max_M - min_M);
+                double n = blanco - m * min_M;
+
+                // Recorremos todos los polígonos
+
+                double x = 0;
+                for (int j = 0; j < columns && x < L; j++)
                 {
-                    // Ahora calculamos su color
-                    double opacity = (matrix.Matrix[i, j].U - min_M) / max_M;
+                    x = matrix.Matrix[0, j].x;
+                    for (int i = 0; i < rows - 1; i++)
+                    {
+                        // Ahora calculamos su color
+                        double opacity = (matrix.Matrix[i, j].U - min_M) / max_M;
 
-                    matrix.Matrix[i, j].poligono.Stroke = Brushes.LightGray;
-                    matrix.Matrix[i, j].poligono.StrokeThickness = 1;
+                        matrix.Matrix[i, j].poligono.Stroke = Brushes.LightGray;
+                        matrix.Matrix[i, j].poligono.StrokeThickness = 1;
 
-                    int color = Convert.ToInt32(Math.Floor(m * matrix.Matrix[i, j].U + n));
-                    string color_hex = String.Concat("#", color.ToString("X"));
-                    SolidColorBrush brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color_hex));
-                    matrix.Matrix[i, j].poligono.Fill = brush;
+                        int color = Convert.ToInt32(Math.Floor(m * matrix.Matrix[i, j].U + n));
+                        string color_hex = String.Concat("#", color.ToString("X"));
+                        SolidColorBrush brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color_hex));
+                        matrix.Matrix[i, j].poligono.Fill = brush;
 
-                    // añadimos los polígonos al canvas
-                    canvas.Children.Add(matrix.Matrix[i, j].poligono);
+                        // añadimos los polígonos al canvas
+                        canvas.Children.Add(matrix.Matrix[i, j].poligono);
 
-                    // Añadimos eventos para poder ver el valor de las variables de este poligono/celfda si pasamos el mouse por encima
-                    matrix.Matrix[i, j].poligono.MouseEnter += Polygon_MouseEnter;
-                    matrix.Matrix[i, j].poligono.MouseLeave += Polygon_MouseLeave;
+                        // Añadimos eventos para poder ver el valor de las variables de este poligono/celfda si pasamos el mouse por encima
+                        matrix.Matrix[i, j].poligono.MouseEnter += Polygon_MouseEnter;
+                        matrix.Matrix[i, j].poligono.MouseLeave += Polygon_MouseLeave;
+                    }
                 }
+
+                List<double> axisX = new List<double>();
+                List<double> axisY1 = new List<double>();
+                List<double> axisY2 = new List<double>();
+
+                x = 0;
+                for (int j = 0; j < columns && x < L; j++)
+                {
+                    List<double> listaAverage1 = new List<double>();
+
+                    x = matrix.Matrix[0, j].x;
+                    for (int i = 0; i < rows - 1; i++)
+                    {
+                        listaAverage1.Add(matrix.Matrix[i, j].U);
+                    }
+                    axisY2.Add(matrix.Matrix[0, j].U);
+                    axisX.Add(x);
+                    axisY1.Add(listaAverage1.Average());
+                }
+
+                var X = axisX.ToArray();
+                var Y1 = axisY1.ToArray();
+                var Y2 = axisY2.ToArray();
+
+                plot.plt.Clear();
+                plot.plt.PlotScatter(X, Y1, markerSize: 0, lineWidth: 3, label: "Average");
+                plot.plt.PlotScatter(X, Y2, markerSize: 0, lineWidth: 3, label: "Boundary");
+                plot.plt.XLabel("X [m]");
+                plot.plt.YLabel("Horizontal Velocity [m/s]");
+                plot.plt.Legend();
             }
-
-            List<double> axisX = new List<double>();
-            List<double> axisY1 = new List<double>();
-            List<double> axisY2 = new List<double>();
-
-            x = 0;
-            for (int j = 0; j < columns && x < L; j++)
+            catch
             {
-                List<double> listaAverage1 = new List<double>();
-
-                x = matrix.Matrix[0, j].x;
-                for (int i = 0; i < rows - 1; i++)
-                {
-                    listaAverage1.Add(matrix.Matrix[i, j].U);
-                }
-                axisY2.Add(matrix.Matrix[0, j].U);
-                axisX.Add(x);
-                axisY1.Add(listaAverage1.Average());
+                MessageBox.Show("Pleae insert valid / reasonable values.");
             }
-
-            var X = axisX.ToArray();
-            var Y1 = axisY1.ToArray();
-            var Y2 = axisY2.ToArray();
-
-            plot.plt.Clear();
-            plot.plt.PlotScatter(X, Y1, markerSize: 0, lineWidth: 3, label: "Average");
-            plot.plt.PlotScatter(X, Y2, markerSize: 0, lineWidth: 3, label: "Boundary");
-            plot.plt.Legend();
         }
 
         private void bt_V_Click(object sender, RoutedEventArgs e)
         {
-            canvas.Children.Clear();
-
-            // Buscamos valor maximo y minimo
-            double max_M = listPolygons.Max(r => r.V);
-            double min_M = listPolygons.Min(r => r.V);
-
-            //double blanco = Convert.ToDouble(Convert.ToInt32("ffffff", 16));
-            double blanco = Convert.ToDouble(Convert.ToInt32("ffffff", 16));
-            double rojo = Convert.ToDouble(Convert.ToInt32("ff0000", 16));
-
-            double m = (rojo - blanco) / (max_M - min_M);
-            double n = blanco - m * min_M;
-
-            // Recorremos todos los polígonos
-
-            double x = 0;
-            for (int j = 0; j < columns && x < L; j++)
+            try
             {
-                x = matrix.Matrix[0, j].x;
-                for (int i = 0; i < rows - 1; i++)
+                canvas.Children.Clear();
+
+                // Buscamos valor maximo y minimo
+                double max_M = listPolygons.Max(r => r.V);
+                double min_M = listPolygons.Min(r => r.V);
+
+                //double blanco = Convert.ToDouble(Convert.ToInt32("ffffff", 16));
+                double blanco = Convert.ToDouble(Convert.ToInt32("ffffff", 16));
+                double rojo = Convert.ToDouble(Convert.ToInt32("ff0000", 16));
+
+                double m = (rojo - blanco) / (max_M - min_M);
+                double n = blanco - m * min_M;
+
+                // Recorremos todos los polígonos
+
+                double x = 0;
+                for (int j = 0; j < columns && x < L; j++)
                 {
-                    // Ahora calculamos su color
-                    double opacity = (matrix.Matrix[i, j].V - min_M) / max_M;
+                    x = matrix.Matrix[0, j].x;
+                    for (int i = 0; i < rows - 1; i++)
+                    {
+                        // Ahora calculamos su color
+                        double opacity = (matrix.Matrix[i, j].V - min_M) / max_M;
 
-                    matrix.Matrix[i, j].poligono.Stroke = Brushes.LightGray;
-                    matrix.Matrix[i, j].poligono.StrokeThickness = 1;
+                        matrix.Matrix[i, j].poligono.Stroke = Brushes.LightGray;
+                        matrix.Matrix[i, j].poligono.StrokeThickness = 1;
 
-                    int color = Convert.ToInt32(Math.Floor(m * matrix.Matrix[i, j].V + n));
-                    string color_hex = String.Concat("#", color.ToString("X"));
-                    SolidColorBrush brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color_hex));
-                    matrix.Matrix[i, j].poligono.Fill = brush;
+                        int color = Convert.ToInt32(Math.Floor(m * matrix.Matrix[i, j].V + n));
+                        string color_hex = String.Concat("#", color.ToString("X"));
+                        SolidColorBrush brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color_hex));
+                        matrix.Matrix[i, j].poligono.Fill = brush;
 
-                    // añadimos los polígonos al canvas
-                    canvas.Children.Add(matrix.Matrix[i, j].poligono);
+                        // añadimos los polígonos al canvas
+                        canvas.Children.Add(matrix.Matrix[i, j].poligono);
 
-                    // Añadimos eventos para poder ver el valor de las variables de este poligono/celfda si pasamos el mouse por encima
-                    matrix.Matrix[i, j].poligono.MouseEnter += Polygon_MouseEnter;
-                    matrix.Matrix[i, j].poligono.MouseLeave += Polygon_MouseLeave;
+                        // Añadimos eventos para poder ver el valor de las variables de este poligono/celfda si pasamos el mouse por encima
+                        matrix.Matrix[i, j].poligono.MouseEnter += Polygon_MouseEnter;
+                        matrix.Matrix[i, j].poligono.MouseLeave += Polygon_MouseLeave;
+                    }
                 }
+
+                List<double> axisX = new List<double>();
+                List<double> axisY1 = new List<double>();
+                List<double> axisY2 = new List<double>();
+
+                x = 0;
+                for (int j = 0; j < columns && x < L; j++)
+                {
+                    List<double> listaAverage1 = new List<double>();
+
+                    x = matrix.Matrix[0, j].x;
+                    for (int i = 0; i < rows - 1; i++)
+                    {
+                        listaAverage1.Add(matrix.Matrix[i, j].V);
+                    }
+                    axisY2.Add(matrix.Matrix[0, j].V);
+                    axisX.Add(x);
+                    axisY1.Add(listaAverage1.Average());
+                }
+
+                var X = axisX.ToArray();
+                var Y1 = axisY1.ToArray();
+                var Y2 = axisY2.ToArray();
+
+                plot.plt.Clear();
+                plot.plt.PlotScatter(X, Y1, markerSize: 0, lineWidth: 3, label: "Average");
+                plot.plt.PlotScatter(X, Y2, markerSize: 0, lineWidth: 3, label: "Boundary");
+                plot.plt.XLabel("X [m]");
+                plot.plt.YLabel("Vertical Velocity [m/s]");
+                plot.plt.Legend();
             }
-
-            List<double> axisX = new List<double>();
-            List<double> axisY1 = new List<double>();
-            List<double> axisY2 = new List<double>();
-
-            x = 0;
-            for (int j = 0; j < columns && x < L; j++)
+            catch
             {
-                List<double> listaAverage1 = new List<double>();
-
-                x = matrix.Matrix[0, j].x;
-                for (int i = 0; i < rows - 1; i++)
-                {
-                    listaAverage1.Add(matrix.Matrix[i, j].V);
-                }
-                axisY2.Add(matrix.Matrix[0, j].V);
-                axisX.Add(x);
-                axisY1.Add(listaAverage1.Average());
+                MessageBox.Show("Pleae insert valid / reasonable values.");
             }
-
-            var X = axisX.ToArray();
-            var Y1 = axisY1.ToArray();
-            var Y2 = axisY2.ToArray();
-
-            plot.plt.Clear();
-            plot.plt.PlotScatter(X, Y1, markerSize: 0, lineWidth: 3, label: "Average");
-            plot.plt.PlotScatter(X, Y2, markerSize: 0, lineWidth: 3, label: "Boundary");
-            plot.plt.Legend();
         }
 
         private void btn_Tables_Click(object sender, RoutedEventArgs e)
@@ -541,24 +602,45 @@ namespace WPF_APP
 
         public void ShowTables (Tablas tables)
         {
-            this.Visibility = Visibility.Hidden;
-
-            if (tables == null)
+            if(matrix != null)
             {
-                tables = new Tablas(matrix);
-                tables.mainwindow = this;
-                tables.Show();
+                this.Visibility = Visibility.Hidden;
+
+                if (tables == null)
+                {
+                    tables = new Tablas(matrix);
+                    tables.mainwindow = this;
+                    tables.Show();
+                }
+                else
+                {
+                    tables.Visibility = Visibility.Visible;
+                    tables.mainwindow = this;
+                }
             }
             else
             {
-                tables.Visibility = Visibility.Visible;
-                tables.mainwindow = this;
+                MessageBox.Show("Pleae insert valid / reasonable values.");
             }
         }
 
-        private void Window_Loaded()
+        private void bt_AndersonValues_Click(object sender, RoutedEventArgs e)
         {
+            double M = 2;
+            double P = 101000;
+            double rho = 1.23;
+            double T = 286.1;
+            double theta = 5.352;
+            double gamma = 1.4;
+            double R = 287;
 
+            tb_M.Text = M.ToString();
+            tb_P.Text = P.ToString();
+            tb_rho.Text = rho.ToString();
+            tb_T.Text = T.ToString();
+            tb_theta.Text = theta.ToString();
+            tb_Gamma.Text = gamma.ToString();
+            tb_R.Text = R.ToString();
         }
     }
 }
